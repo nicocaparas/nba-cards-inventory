@@ -1,15 +1,27 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Card {
+  id             Int      @id @default(autoincrement())
+  playerName     String
+  year           Int
+  cardBrand      String
+  variant        String?  // e.g., "Orange Ice", "My House", "Silver Prizm"
+  isRookie       Boolean  @default(false)
+  isGraded       Boolean  @default(false)
+  grader         String?  // PSA, BGS, etc.
+  grade          Float?   // 9.5, 10, etc.
+  acquirePrice   Float?
+  estimatedValue Float?   // ← keep it optional if fetched from eBay
+  lastUpdated    DateTime? // ← timestamp when value was last pulled
+  listedForSale  Boolean @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([playerName])
 }
