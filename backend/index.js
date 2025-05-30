@@ -74,6 +74,24 @@ app.post('/cards', async (req, res) => {
   }
 });
 
+// DELETE a specific card from the database
+
+app.delete('/cards/:id', async (req, res) => {
+  const cardId = parseInt(req.params.id);
+
+  try {
+    const deletedCard = await prisma.card.delete({
+      where: { id: cardId },
+    });
+
+    res.json({ message: 'Card deleted successfully', card: deletedCard });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete card' });
+  }
+});
+
+
 // Start the server 
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
