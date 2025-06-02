@@ -20,7 +20,7 @@ model Card {
   acquirePrice   Float?
   estimatedValue Float?   // ← keep it optional if fetched from eBay
   lastUpdated    DateTime? // ← timestamp when value was last pulled
-  listedForSale  Boolean @default(false)
+  saleStatus     String  @default("available")
   createdAt      DateTime @default(now())
 
   @@index([playerName])

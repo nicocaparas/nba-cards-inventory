@@ -16,9 +16,6 @@ function App() {
     grader: '',
     grade: '',
     acquirePrice: '',
-    estimatedValue: '',
-    lastUpdated: '',
-    listedForSale: false,
   });
   
   useEffect(() => {
@@ -42,7 +39,8 @@ function App() {
     // Prepare the data
     const cardData = {
       ...newCard,
-      lastUpdated: newCard.lastUpdated ? new Date(newCard.lastUpdated).toISOString() : null,
+      grader: newCard.grader ? newCard.grader : null,   
+      grade: newCard.grade ? parseFloat(newCard.grade) : null, 
     };
 
     axios.post('http://localhost:5000/cards', cardData)
@@ -59,9 +57,6 @@ function App() {
           grader: '',
           grade: '',
           acquirePrice: '',
-          estimatedValue: '',
-          lastUpdated: '',
-          listedForSale: false,
         });
       })
       .catch((error) => {
@@ -194,22 +189,36 @@ function App() {
             Graded
           </label>
 
-          {/* Grader and Grade */}
-          <input
-            type="text"
-            placeholder="Grader"
-            value={newCard.grader}
-            onChange={(e) => setNewCard({ ...newCard, grader: e.target.value })}
-            className="border p-2 rounded"
-          />
-          <input
-            type="number"
-            placeholder="Grade"
-            value={newCard.grade}
-            onChange={(e) => setNewCard({ ...newCard, grade: parseFloat(e.target.value) })}
-            className="border p-2 rounded"
-            step="0.1"
-          />
+          {newCard.isGraded && (
+            <>
+              {/* Grader Dropdown */}
+              <select
+                value={newCard.grader}
+                onChange={(e) => setNewCard({ ...newCard, grader: e.target.value })}
+                className="border p-2 rounded"
+              >
+                <option value="">Select Grader</option>
+                <option value="PSA">PSA</option>
+                <option value="BGS">BGS</option>
+              </select>
+
+              {/* Grade Dropdown */}
+              <select
+                value={newCard.grade}
+                onChange={(e) => setNewCard({ ...newCard, grade: parseFloat(e.target.value) })}
+                className="border p-2 rounded"
+              >
+                <option value="">Select Grade</option>
+                <option value="10">10</option>
+                <option value="9.5">9.5</option>
+                <option value="9">9</option>
+                <option value="8.5">8.5</option>
+                <option value="8">8</option>
+                <option value="7.5">7.5</option>
+                <option value="7">7</option>
+              </select>
+            </>
+          )}
 
           <input
             type="number"
@@ -219,31 +228,6 @@ function App() {
             className="border p-2 rounded"
             step="0.01"
           />
-
-          <input
-            type="number"
-            placeholder="Estimated Value"
-            value={newCard.estimatedValue}
-            onChange={(e) => setNewCard({ ...newCard, estimatedValue: parseFloat(e.target.value) })}
-            className="border p-2 rounded"
-            step="0.01"
-          />
-
-          <input
-            type="date"
-            value={newCard.lastUpdated}
-            onChange={(e) => setNewCard({ ...newCard, lastUpdated: e.target.value })}
-            className="border p-2 rounded"
-          />
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={newCard.listedForSale}
-              onChange={(e) => setNewCard({ ...newCard, listedForSale: e.target.checked })}
-            />
-            Listed for Sale
-          </label>
 
           {/* Submit Button */}
           <button
@@ -268,7 +252,7 @@ function App() {
               <h2 className="text-xl font-bold">{card.playerName}</h2>
               <p className="text-gray-600">{card.cardBrand} - {card.year}</p>
               {card.variant && <p className="text-sm italic text-gray-500">{card.variant}</p>}
-              <p className="text-green-600 font-bold">${card.estimatedValue || "N/A"}</p>
+              <p className="text-green-600 font-bold">${card.acquirePrice || "N/A"}</p>
               {card.isRookie && (
                 <span className="text-xs bg-yellow-300 p-1 rounded inline-block mt-2">
                   Rookie Card
