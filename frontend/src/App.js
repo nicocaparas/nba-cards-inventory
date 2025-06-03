@@ -17,7 +17,10 @@ function App() {
     grade: '',
     acquirePrice: '',
   });
-  
+
+  // For the edit button 
+  const [editVisibleId, setEditVisibleId] = useState(null);
+
   useEffect(() => {
     // Fetch cards from the backend
     axios.get('http://localhost:5000/cards')
@@ -77,6 +80,15 @@ function App() {
     });
   };
 
+  const toggleEdit = (id) => {
+    if (editVisibleId === id) {
+      setEditVisibleId(null); // close if already open
+    } else {
+      setEditVisibleId(id); // show for this card
+    }
+  };
+  
+
 
 
   return (
@@ -133,109 +145,136 @@ function App() {
         </h2>
         <form
           onSubmit={handleAddCard}
-          className="p-5 border rounded-lg shadow-lg grid gap-4 max-w-md mx-auto"
+          className="mb-10 p-8 border rounded-lg shadow-lg grid gap-6 max-w-2xl mx-auto bg-white"
         >
-          <input
-            type="text"
-            placeholder="Player Name"
-            value={newCard.playerName}
-            onChange={(e) => setNewCard({ ...newCard, playerName: e.target.value })}
-            className="border p-2 rounded"
-            required
-          />
-
-          <input
-            type="number"
-            placeholder="Year"
-            value={newCard.year}
-            onChange={(e) => setNewCard({ ...newCard, year: parseInt(e.target.value) })}
-            className="border p-2 rounded"
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="Card Brand"
-            value={newCard.cardBrand}
-            onChange={(e) => setNewCard({ ...newCard, cardBrand: e.target.value })}
-            className="border p-2 rounded"
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="Variant"
-            value={newCard.variant}
-            onChange={(e) => setNewCard({ ...newCard, variant: e.target.value })}
-            className="border p-2 rounded"
-          />
-
-          {/* Checkboxes */}
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={newCard.isRookie}
-              onChange={(e) => setNewCard({ ...newCard, isRookie: e.target.checked })}
-            />
-            Rookie Card
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={newCard.isGraded}
-              onChange={(e) => setNewCard({ ...newCard, isGraded: e.target.checked })}
-            />
-            Graded
-          </label>
-
-          {newCard.isGraded && (
-            <>
-              {/* Grader Dropdown */}
-              <select
-                value={newCard.grader}
-                onChange={(e) => setNewCard({ ...newCard, grader: e.target.value })}
+          {/* Player Info */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Player Info</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="Player Name"
+                value={newCard.playerName}
+                onChange={(e) => setNewCard({ ...newCard, playerName: e.target.value })}
                 className="border p-2 rounded"
-              >
-                <option value="">Select Grader</option>
-                <option value="PSA">PSA</option>
-                <option value="BGS">BGS</option>
-              </select>
-
-              {/* Grade Dropdown */}
-              <select
-                value={newCard.grade}
-                onChange={(e) => setNewCard({ ...newCard, grade: parseFloat(e.target.value) })}
+                required
+              />
+              <input
+                type="number"
+                placeholder="Year"
+                value={newCard.year}
+                onChange={(e) => setNewCard({ ...newCard, year: parseInt(e.target.value) })}
                 className="border p-2 rounded"
-              >
-                <option value="">Select Grade</option>
-                <option value="10">10</option>
-                <option value="9.5">9.5</option>
-                <option value="9">9</option>
-                <option value="8.5">8.5</option>
-                <option value="8">8</option>
-                <option value="7.5">7.5</option>
-                <option value="7">7</option>
-              </select>
-            </>
-          )}
+                required
+              />
+            </div>
 
-          <input
-            type="number"
-            placeholder="Acquire Price"
-            value={newCard.acquirePrice}
-            onChange={(e) => setNewCard({ ...newCard, acquirePrice: parseFloat(e.target.value) })}
-            className="border p-2 rounded"
-            step="0.01"
-          />
+            {/* Rookie Checkbox — add it below the grid for better flow */}
+            <div className="mt-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={newCard.isRookie}
+                  onChange={(e) => setNewCard({ ...newCard, isRookie: e.target.checked })}
+                />
+                Rookie Card
+              </label>
+            </div>
+          </div>
+
+
+          {/* Card Info */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Card Info</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="Card Brand"
+                value={newCard.cardBrand}
+                onChange={(e) => setNewCard({ ...newCard, cardBrand: e.target.value })}
+                className="border p-2 rounded"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Variant"
+                value={newCard.variant}
+                onChange={(e) => setNewCard({ ...newCard, variant: e.target.value })}
+                className="border p-2 rounded"
+              />
+            </div>
+          </div>
+
+          {/* Grading Info */}
+          <div>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={newCard.isGraded}
+                  onChange={(e) => setNewCard({ ...newCard, isGraded: e.target.checked })}
+                /> Graded
+              </label>
+            </div>
+            {newCard.isGraded && (
+              <div className="mt-4">
+                {/* Move the title OUTSIDE the grid */}
+                <h3 className="text-lg font-semibold mb-2">Grading Info</h3>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Grader Dropdown */}
+                  <select
+                    value={newCard.grader}
+                    onChange={(e) => setNewCard({ ...newCard, grader: e.target.value })}
+                    className="border p-2 rounded"
+                  >
+                    <option value="">Select Grader</option>
+                    <option value="PSA">PSA</option>
+                    <option value="BGS">BGS</option>
+                  </select>
+
+                  {/* Grade Dropdown */}
+                  <select
+                    value={newCard.grade}
+                    onChange={(e) => setNewCard({ ...newCard, grade: parseFloat(e.target.value) })}
+                    className="border p-2 rounded"
+                  >
+                    <option value="">Select Grade</option>
+                    <option value="10">10</option>
+                    <option value="9.5">9.5</option>
+                    <option value="9">9</option>
+                    <option value="8.5">8.5</option>
+                    <option value="8">8</option>
+                    <option value="7.5">7.5</option>
+                    <option value="7">7</option>
+                  </select>
+                </div>
+              </div>
+            )}
+            </div>
+
+          {/* Price Info */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Pricing Info</h3>
+            <input
+              type="number"
+              placeholder="Acquire Price"
+              value={newCard.acquirePrice}
+              onChange={(e) => setNewCard({ ...newCard, acquirePrice: parseFloat(e.target.value) })}
+              className="border p-2 rounded"
+              step="0.01"
+            />
+          </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Add Card
-          </button>
+          <div className="flex justify-center mt-6">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-200 text-lg font-semibold shadow-md"
+            >
+              Add Card
+            </button>
+          </div>
         </form>
       </div>
       
@@ -246,31 +285,62 @@ function App() {
           📚 Your Collection
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-6">
           {cards.map((card) => (
-            <div key={card.id} className="border p-5 rounded-lg shadow hover:shadow-lg transition">
-              <h2 className="text-xl font-bold">{card.playerName}</h2>
-              <p className="text-gray-600">{card.cardBrand} - {card.year}</p>
-              {card.variant && <p className="text-sm italic text-gray-500">{card.variant}</p>}
-              <p className="text-green-600 font-bold">${card.acquirePrice || "N/A"}</p>
-              {card.isRookie && (
-                <span className="text-xs bg-yellow-300 p-1 rounded inline-block mt-2">
-                  Rookie Card
-                </span>
-              )}
-              {card.isGraded && (
-                <p className="text-sm mt-1">
-                  Graded: {card.grade} ({card.grader})
-                </p>
-              )}
-              <button
-                onClick={() => handleDelete(card.id)}
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition font-semibold"
-              >
-                Delete
-              </button>
+            <div
+              key={card.id}
+              className="flex items-center justify-between border border-gray-300 p-4 rounded-2xl shadow-md bg-white hover:shadow-lg hover:bg-gray-50 transition-all duration-300"
+            >
+              {/* Player Name + RC */}
+              <div className="flex items-center gap-2 w-1/5 font-bold">
+                {card.playerName}
+                {card.isRookie && (
+                  <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded-full">
+                    RC
+                  </span>
+                )}
+              </div>
+
+              {/* Year + Brand */}
+              <div className="w-1/5 text-gray-600">{card.year} {card.cardBrand}</div>
+
+              {/* Variant */}
+              <div className="w-1/5 text-gray-500">{card.variant || "-"}</div>
+
+              {/* Grader + Grade */}
+              <div className="w-1/5 text-sm">
+                {card.isGraded ? (
+                  <>{card.grader} {card.grade}</>
+                ) : (
+                  <>-</>
+                )}
+              </div>
+
+              {/* Price */}
+              <div className="w-1/12 text-green-600 font-bold">
+                {card.acquirePrice ? `$${card.acquirePrice}` : "—"}
+              </div>
+
+              {/* Edit Icon */}
+              <div className="flex items-center justify-end gap-2 w-1/12">
+                {editVisibleId === card.id && (
+                  <button
+                    onClick={() => handleDelete(card.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
+                  >
+                    Delete
+                  </button>
+                )}
+                <button
+                  onClick={() => toggleEdit(card.id)}
+                  className="transform hover:scale-125 transition-all duration-200"
+                >
+                  ✏️
+                </button>
+              </div>
 
             </div>
+          
           ))}
         </div>
       </div>
