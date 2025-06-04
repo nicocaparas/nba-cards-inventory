@@ -23,5 +23,27 @@ A full-stack web application to manage, track, and monitor your NBA trading card
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 cd nba-card-inventory
 ```
+### 2. Install Backend Dependencies
+```bash
+cd backend
+npm install
+npm run dev
+```
+### 3. Install Frontend Dependencies
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## 🔮 Future Improvements
+- Live market value updates via eBay API
+- Sorting and advanced filtering
+- Card images and more metadata
+- Deployment to Vercel
+
+## 📄 License
+This project is licensed under the MIT License.
+
 
 
