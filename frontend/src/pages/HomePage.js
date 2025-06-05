@@ -1,4 +1,13 @@
-function HomePage() {
+import { useState, useEffect } from 'react';
+
+function HomePage({ cards }) {
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Filter cards based on search
+    const filteredCards = cards.filter(card =>
+        card.playerName.toLowerCase().includes(searchTerm.toLowerCase())
+    ); 
+
     return (
         <div>
             {/* Website Title */}
@@ -11,9 +20,40 @@ function HomePage() {
                 <input
                     type="text"
                     placeholder="Search for cards..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     className="border p-2 rounded w-full max-w-2xl shadow"
                 />
             </div>
+
+            {/* Search Results Section */}
+            {searchTerm && (
+                <div className={`mb-10 px-4 transition-opacity transition-transform duration-700 ease-in-out ${searchTerm ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
+                    }`}>                
+                    <h2 className="text-2xl font-bold text-center text-blue-500 mb-6">
+                        Search Results
+                    </h2>
+
+                    {filteredCards.length > 0 ? (
+                        <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+                            {filteredCards.map((card) => (
+                                <div
+                                    key={card.id}
+                                    className="flex items-center justify-between border border-gray-300 p-4 rounded-2xl shadow-md bg-white hover:shadow-lg hover:bg-gray-50 transition-all duration-300"
+                                >
+                                    <div>
+                                        <h3 className="text-lg font-bold">{card.playerName}</h3>
+                                        <p className="text-gray-600">{card.cardBrand}</p>
+                                    </div>
+                                    {/* Placeholder for action buttons (optional) */}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center text-gray-500">No cards found.</p>
+                    )}
+                </div>
+            )}
 
             {/* Hot Cards Section */}
 
@@ -38,6 +78,13 @@ function HomePage() {
                     </div>
 
                     {/* Hot card 3 */}
+                    <div className="border p-5 rounded-lg shadow hover:shadow-lg transition">
+                        <h3 className="text-xl font-bold">Giannis Antetokounmpo</h3>
+                        <p className="text-gray-600">Select - 2013</p>
+                        <p className="text-green-600 font-bold mt-2">+10% ↑</p>
+                    </div>
+
+                    {/* Hot card 4 */}
                     <div className="border p-5 rounded-lg shadow hover:shadow-lg transition">
                         <h3 className="text-xl font-bold">Giannis Antetokounmpo</h3>
                         <p className="text-gray-600">Select - 2013</p>
