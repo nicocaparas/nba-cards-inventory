@@ -102,7 +102,11 @@ function App() {
       <Navbar />
       <div className="p-10">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={
+            <HomePage
+              cards={cards}
+            />
+          } />
           <Route path="/add-card" element={
             <AddCardPage
               newCard={newCard}
