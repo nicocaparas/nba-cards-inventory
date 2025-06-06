@@ -1,4 +1,43 @@
+import { useState, useEffect } from 'react';
+import CardForm from '../components/CardForm';
+
+
 function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
+    const [editingCard, setEditingCard] = useState(null);
+    const [editFormData, setEditFormData] = useState({
+        playerName: '',
+        year: '',
+        cardBrand: '',
+        variant: '',
+        isRookie: false,
+        isGraded: false,
+        grader: '',
+        grade: '',
+        acquirePrice: '',
+    });
+
+    const handleEditClick = (card) => {
+        setEditingCard(card); // Sets editingCard to the card object 
+        // Sets the form with card metadata
+        setEditFormData({
+            playerName: card.playerName || '',
+            year: card.year || '',
+            cardBrand: card.cardBrand || '',
+            variant: card.variant || '',
+            isRookie: card.isRookie || false,
+            isGraded: card.isGraded || false,
+            grader: card.grader || '',
+            grade: card.grade || '',
+            acquirePrice: card.acquirePrice || '',
+        });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        console.log('Updated Card Data:', editFormData);
+        setEditingCard(null); // hide the form after submit
+    };
+
     return (
         <div>
             {/* Card List */}
@@ -46,12 +85,20 @@ function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
                             {/* Edit Icon */}
                             <div className="flex items-center justify-end gap-2 w-1/12">
                                 {editVisibleId === card.id && (
-                                    <button
-                                        onClick={() => handleDelete(card.id)}
-                                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
-                                    >
-                                        Delete
-                                    </button>
+                                    <>
+                                        <button
+                                            onClick={() => handleDelete(card.id)}
+                                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
+                                        >
+                                            Delete
+                                        </button>
+                                        <button
+                                            onClick={() => handleEditClick(card)}
+                                            className="bg-yellow-400 text-white px-2 py-1 rounded hover:bg-yellow-500 transition font-semibold"
+                                        >
+                                            Edit
+                                        </button>
+                                    </>
                                 )}
                                 <button
                                     onClick={() => toggleEdit(card.id)}
@@ -61,8 +108,16 @@ function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
                                 </button>
                             </div>
 
-                        </div>
+                            {editingCard && editingCard.id === card.id && (
+                                <CardForm
+                                    formData={editFormData}
+                                    setFormData={setEditFormData}
+                                    handleSubmit={handleFormSubmit}
+                                    isEditMode={true}
+                                />
+                            )}
 
+                        </div>
                     ))}
                 </div>
             </div>
