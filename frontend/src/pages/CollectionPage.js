@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CardForm from '../components/CardForm';
-
+import axios from 'axios';
 
 function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
     const [editingCard, setEditingCard] = useState(null);
@@ -32,10 +32,22 @@ function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
         });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        console.log('Updated Card Data:', editFormData);
-        setEditingCard(null); // hide the form after submit
+
+        try {
+            const response = await axios.put(`http://localhost:5000/cards/${editingCard.id}`, editFormData);
+
+            console.log('Card updated:', response.data);
+
+            // OPTIONAL: Refresh card list here if you want
+            // await fetchCardsAgain();
+
+            setEditingCard(null); // Close the form after successful edit
+        } catch (error) {
+            console.error('Error updating card:', error);
+            alert('Failed to update the card. Please try again.');
+          }
     };
 
     return (
@@ -48,75 +60,77 @@ function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
 
                 <div className="flex flex-col gap-6">
                     {cards.map((card) => (
-                        <div
-                            key={card.id}
-                            className="flex items-center justify-between border border-gray-300 p-4 rounded-2xl shadow-md bg-white hover:shadow-lg hover:bg-gray-50 transition-all duration-300"
-                        >
-                            {/* Player Name + RC */}
-                            <div className="flex items-center gap-2 w-1/5 font-bold">
-                                {card.playerName}
-                                {card.isRookie && (
-                                    <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded-full">
-                                        RC
-                                    </span>
+                        <div key={card.id} className="flex flex-col gap-2">
+                            <div
+                                key={card.id}
+                                className="flex items-center justify-between border border-gray-300 p-4 rounded-2xl shadow-md bg-white hover:shadow-lg hover:bg-gray-50 transition-all duration-300"
+                            >
+                                {/* Player Name + RC */}
+                                <div className="flex items-center gap-2 w-1/5 font-bold">
+                                    {card.playerName}
+                                    {card.isRookie && (
+                                        <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded-full">
+                                            RC
+                                        </span>
+                                    )}
+                                </div>
+
+                                {/* Year + Brand */}
+                                <div className="w-1/5 text-gray-600">{card.year} {card.cardBrand}</div>
+
+                                {/* Variant */}
+                                <div className="w-1/5 text-gray-500">{card.variant || "-"}</div>
+
+                                {/* Grader + Grade */}
+                                <div className="w-1/5 text-sm">
+                                    {card.isGraded ? (
+                                        <>{card.grader} {card.grade}</>
+                                    ) : (
+                                        <>-</>
+                                    )}
+                                </div>
+
+                                {/* Price */}
+                                <div className="w-1/12 text-green-600 font-bold">
+                                    {card.acquirePrice ? `$${card.acquirePrice}` : "—"}
+                                </div>
+
+                                {/* Edit Icon */}
+                                <div className="flex items-center justify-end gap-2 w-1/12">
+                                    {editVisibleId === card.id && (
+                                        <>
+                                            <button
+                                                onClick={() => handleDelete(card.id)}
+                                                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
+                                            >
+                                                Delete
+                                            </button>
+                                            <button
+                                                onClick={() => handleEditClick(card)}
+                                                className="bg-yellow-400 text-white px-2 py-1 rounded hover:bg-yellow-500 transition font-semibold"
+                                            >
+                                                Edit
+                                            </button>
+                                        </>
+                                    )}
+                                    <button
+                                        onClick={() => toggleEdit(card.id)}
+                                        className="transform hover:scale-125 transition-all duration-200"
+                                    >
+                                        ✏️
+                                    </button>
+                                </div>
+                            </div>
+
+                                {editingCard && editingCard.id === card.id && (
+                                    <CardForm
+                                        formData={editFormData}
+                                        setFormData={setEditFormData}
+                                        handleSubmit={handleFormSubmit}
+                                        isEditMode={true}
+                                        setEditingCard={setEditingCard}
+                                    />
                                 )}
-                            </div>
-
-                            {/* Year + Brand */}
-                            <div className="w-1/5 text-gray-600">{card.year} {card.cardBrand}</div>
-
-                            {/* Variant */}
-                            <div className="w-1/5 text-gray-500">{card.variant || "-"}</div>
-
-                            {/* Grader + Grade */}
-                            <div className="w-1/5 text-sm">
-                                {card.isGraded ? (
-                                    <>{card.grader} {card.grade}</>
-                                ) : (
-                                    <>-</>
-                                )}
-                            </div>
-
-                            {/* Price */}
-                            <div className="w-1/12 text-green-600 font-bold">
-                                {card.acquirePrice ? `$${card.acquirePrice}` : "—"}
-                            </div>
-
-                            {/* Edit Icon */}
-                            <div className="flex items-center justify-end gap-2 w-1/12">
-                                {editVisibleId === card.id && (
-                                    <>
-                                        <button
-                                            onClick={() => handleDelete(card.id)}
-                                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
-                                        >
-                                            Delete
-                                        </button>
-                                        <button
-                                            onClick={() => handleEditClick(card)}
-                                            className="bg-yellow-400 text-white px-2 py-1 rounded hover:bg-yellow-500 transition font-semibold"
-                                        >
-                                            Edit
-                                        </button>
-                                    </>
-                                )}
-                                <button
-                                    onClick={() => toggleEdit(card.id)}
-                                    className="transform hover:scale-125 transition-all duration-200"
-                                >
-                                    ✏️
-                                </button>
-                            </div>
-
-                            {editingCard && editingCard.id === card.id && (
-                                <CardForm
-                                    formData={editFormData}
-                                    setFormData={setEditFormData}
-                                    handleSubmit={handleFormSubmit}
-                                    isEditMode={true}
-                                />
-                            )}
-
                         </div>
                     ))}
                 </div>

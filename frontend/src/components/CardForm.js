@@ -1,9 +1,20 @@
-function CardForm({ formData, setFormData, handleSubmit, isEditMode }) {
+function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingCard }) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="mb-10 p-8 border rounded-lg shadow-lg grid gap-6 max-w-2xl mx-auto bg-white"
+            className="relative mb-10 p-8 border rounded-lg shadow-lg grid gap-6 max-w-2xl mx-auto bg-white"
         >
+            {/* Only show X button if isEditMode is true */}
+            {isEditMode && (
+                <button
+                    type="button"
+                    onClick={() => setEditingCard(null)}
+                    className="absolute top-2 right-4 text-gray-500 hover:text-red-500 text-xl font-bold"
+                >
+                    ×
+                </button>
+            )}
+
             {/* Player Info */}
             <div>
                 <h3 className="text-lg font-semibold mb-2">Player Info</h3>

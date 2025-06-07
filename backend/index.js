@@ -68,6 +68,24 @@ app.post('/cards', async (req, res) => {
   }
 });
 
+// UPDATE an existing card in the database
+app.put('/cards/:id', async (req, res) => {
+  const { id } = req.params; // Get card ID from URL
+  const updatedData = req.body; 
+
+  try {
+    const updatedCard = await prisma.card.update({
+      where: { id: parseInt(id) }, // Make sure ID is an integer
+      data: updatedData, // Update with the new data
+    });
+    res.json(updatedCard); // Send updated card back
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update card' });
+  }
+});
+
+
 // DELETE a specific card from the database
 
 app.delete('/cards/:id', async (req, res) => {
