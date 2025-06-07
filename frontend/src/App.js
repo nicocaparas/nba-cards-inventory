@@ -30,15 +30,23 @@ function App() {
   // For the edit button 
   const [editVisibleId, setEditVisibleId] = useState(null);
 
-  useEffect(() => {
-    // Fetch cards from the backend
+  // Function to fetch cards from the backend
+  const fetchCards = () => {
     axios.get('http://localhost:5000/cards')
       .then((response) => {
+        // Sort cards by playerName (A → Z)
+        const sortedCards = response.data.sort((a, b) => {
+          return a.playerName.localeCompare(b.playerName);
+        });
         setCards(response.data);
       })
       .catch((error) => {
         console.error('Error fetching cards:', error);
       });
+  };
+
+  useEffect(() => {
+    fetchCards();
   }, []);
 
   // Submits the form to add a new card:
@@ -117,6 +125,7 @@ function App() {
           <Route path="/collection" element={
             <CollectionPage
               cards={cards}
+              fetchCards={fetchCards}
               handleDelete={handleDelete}
               editVisibleId={editVisibleId}
               toggleEdit={toggleEdit}

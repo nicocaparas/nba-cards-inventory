@@ -90,7 +90,9 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
                         <div className="grid grid-cols-2 gap-4">
                             <select
                                 value={formData.grader}
-                                onChange={(e) => setFormData({ ...formData, grader: e.target.value })}
+                                onChange={(e) => setFormData({ 
+                                    ...formData, 
+                                    grader: e.target.value.trim() === '' ? null : e.target.value.trim() })}
                                 className="border p-2 rounded"
                             >
                                 <option value="">Select Grader</option>
@@ -100,7 +102,9 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
 
                             <select
                                 value={formData.grade}
-                                onChange={(e) => setFormData({ ...formData, grade: parseFloat(e.target.value) })}
+                                onChange={(e) => setFormData({ 
+                                    ...formData, 
+                                    grade: e.target.value === '' ? null : parseFloat(e.target.value) })}
                                 className="border p-2 rounded"
                             >
                                 <option value="">Select Grade</option>

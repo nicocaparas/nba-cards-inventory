@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CardForm from '../components/CardForm';
 import axios from 'axios';
 
-function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
+function CollectionPage({ cards, fetchCards, handleDelete, editVisibleId, toggleEdit }) {
     const [editingCard, setEditingCard] = useState(null);
     const [editFormData, setEditFormData] = useState({
         playerName: '',
@@ -35,14 +35,19 @@ function CollectionPage({ cards, handleDelete, editVisibleId, toggleEdit }) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        // Clean empty strings → nulls
+        const cleanedData = {
+            ...editFormData,
+            grader: editFormData.grader && editFormData.grader.trim() !== '' ? editFormData.grader.trim() : null,
+            grade: editFormData.grade !== '' ? parseFloat(editFormData.grade) : null,
+        };
+
         try {
-            const response = await axios.put(`http://localhost:5000/cards/${editingCard.id}`, editFormData);
+            const response = await axios.put(`http://localhost:5000/cards/${editingCard.id}`, cleanedData);
 
             console.log('Card updated:', response.data);
 
-            // OPTIONAL: Refresh card list here if you want
-            // await fetchCardsAgain();
-
+            await fetchCards(); // 🟢 Fetch updated cards list
             setEditingCard(null); // Close the form after successful edit
         } catch (error) {
             console.error('Error updating card:', error);
