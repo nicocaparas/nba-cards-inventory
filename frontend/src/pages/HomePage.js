@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useCards } from '../context/CardsContext';
 
-function HomePage({ cards }) {
+function HomePage() {
+    const { cards } = useCards(); // Get cards from Context
+
     const [searchTerm, setSearchTerm] = useState('');
 
     // Filter cards based on search

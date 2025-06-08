@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import CardForm from '../components/CardForm';
+import { useCards } from '../context/CardsContext';
 import axios from 'axios';
+import CardForm from '../components/CardForm';
 
-function CollectionPage({ cards, fetchCards, handleDelete, editVisibleId, toggleEdit }) {
+function CollectionPage() {
+    const { cards, setCards, fetchCards } = useCards(); // use Context
+    const [editVisibleId, setEditVisibleId] = useState(null); // For the edit button 
     const [editingCard, setEditingCard] = useState(null);
+
     const [editFormData, setEditFormData] = useState({
         playerName: '',
         year: '',
@@ -16,8 +20,27 @@ function CollectionPage({ cards, fetchCards, handleDelete, editVisibleId, toggle
         acquirePrice: '',
     });
 
+    // Function to handle deleting a card by its ID
+    const handleDelete = (id) => {
+        axios.delete(`http://localhost:5000/cards/${id}`)
+            .then(() => {
+                // Remove the card from card context 
+                setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+            })
+            .catch((error) => {
+                console.error('Error deleting card:', error);
+            });
+    };
+
+    // Toggle edit visibility per card
+    const toggleEdit = (id) => {
+        setEditVisibleId((prevId) => (prevId === id ? null : id));
+    };
+
+    // When user clicks Edit button, preload form
     const handleEditClick = (card) => {
-        setEditingCard(card); // Sets editingCard to the card object 
+        // Sets editingCard to the card object 
+        setEditingCard(card); 
         // Sets the form with card metadata
         setEditFormData({
             playerName: card.playerName || '',
@@ -32,6 +55,7 @@ function CollectionPage({ cards, fetchCards, handleDelete, editVisibleId, toggle
         });
     };
 
+    // Handle form submit to update card
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -47,7 +71,7 @@ function CollectionPage({ cards, fetchCards, handleDelete, editVisibleId, toggle
 
             console.log('Card updated:', response.data);
 
-            await fetchCards(); // 🟢 Fetch updated cards list
+            await fetchCards(); // 🟢 Updates the cards list
             setEditingCard(null); // Close the form after successful edit
         } catch (error) {
             console.error('Error updating card:', error);
