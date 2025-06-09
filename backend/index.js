@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
-require('dotenv').config();
+require('dotenv').config(); // Load env variables
 
 // Initialization 
 const app = express();
@@ -85,9 +85,7 @@ app.put('/cards/:id', async (req, res) => {
   }
 });
 
-
 // DELETE a specific card from the database
-
 app.delete('/cards/:id', async (req, res) => {
   const cardId = parseInt(req.params.id);
 
@@ -102,6 +100,10 @@ app.delete('/cards/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete card' });
   }
 });
+
+// Ebay API access route 
+const ebayRoutes = require('./routes/ebay');
+app.use('/api/ebay', ebayRoutes);
 
 
 // Start the server 
