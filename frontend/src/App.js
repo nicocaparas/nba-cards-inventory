@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AddCardPage from './pages/AddCardPage';
 import CollectionPage from './pages/CollectionPage';
+import EbayTest from './pages/EbayTest';
 import Navbar from './components/Navbar';
 
 import { CardsProvider } from './context/CardsContext'; 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/add-card" element={<AddCardPage />} />
             <Route path="/collection" element={<CollectionPage />} />
+            <Route path="/ebay-test" element={<EbayTest />} />
           </Routes>
         </div>
       </Router>

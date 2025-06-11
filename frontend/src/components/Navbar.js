@@ -36,6 +36,17 @@ function Navbar() {
                 >
                     Collection
                 </NavLink>
+
+                <NavLink
+                    to="/ebay-test"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "text-yellow-300 border-b-2 border-yellow-300 pb-1"
+                            : "hover:text-gray-200 transition pb-1"
+                    }
+                >
+                    Ebay Test
+                </NavLink>
             </div>
         </nav>
     );
