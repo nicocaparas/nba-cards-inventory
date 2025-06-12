@@ -42,6 +42,12 @@ npm start
 - Card images and more metadata
 - Deployment to Vercel
 
+## 🚧 Known Issues
+
+- ❗ **eBay Marketplace Insights API**  
+Problem: Having issues with using eBay's Finding API because it turns out it has been discontinued.
+Fix: Currently looking into using eBay's Marketplace Insights API as an alternative. 
+
 ## 📄 License
 This project is licensed under the MIT License.
 
