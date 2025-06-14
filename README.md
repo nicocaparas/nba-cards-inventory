@@ -42,11 +42,11 @@ npm start
 - Card images and more metadata
 - Deployment to Vercel
 
-## 🚧 Known Issues
-
-- ❗ **eBay Marketplace Insights API**  
-Problem: Having issues with using eBay's Finding API because it turns out it has been discontinued.
-Fix: Currently looking into using eBay's Marketplace Insights API as an alternative. 
+## 🚧 eBay API Integration Status
+**📅 Status: Actively in development (as of June 13, 2025)**  
+- 🔍 This app originally intended to use eBay’s Finding API (findCompletedItems) to track sold card prices, but the API is deprecated.
+- 🔄 I'm now working toward integrating the Marketplace Insights API, which provides sales history data.
+- 🛠️ Integration requires passing eBay’s Application Growth Check, so the process involves multiple compliance and development steps.
 
 ## 📄 License
 This project is licensed under the MIT License.
