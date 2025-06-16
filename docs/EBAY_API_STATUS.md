@@ -10,10 +10,10 @@ This document tracks the current integration status of the eBay API with the NBA
 - [x] OAuth token flow working (Client Credentials & User Auth)  
 - [x] eBay Browse API integrated — fetches **active listings** for current market prices  
 
-### 🔨 Marketplace Insights API Integration (IN PROGRESS)
+### 🔨 Marketplace Insights API Integration Plan
 
 - [x] Decided to pursue Marketplace Insights API due to Finding API deprecation
-- [ ] Scrape 130point to get card last sold data right away (for personal use only) **IN PROGRESS**  
+- [ ] Scrape 130point to get card last sold data right away (for personal use only) 🔄 **IN PROGRESS** 🔄
 - [ ] Prepare app for eBay’s Application Growth Check (compliance, privacy policy, secure redirects, etc.)  
 - [ ] Design integration architecture for **sold listings data**  
 - [ ] Set up mock API to simulate Marketplace Insights response for frontend testing 
