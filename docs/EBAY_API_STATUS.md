@@ -12,11 +12,11 @@ This document tracks the current integration status of the eBay API with the NBA
 
 ### 🔨 Marketplace Insights API Integration (IN PROGRESS)
 
-- [x] Decided to pursue Marketplace Insights API due to Finding API deprecation  
+- [x] Decided to pursue Marketplace Insights API due to Finding API deprecation
+- [ ] Scrape 130point to get card last sold data right away (for personal use only) **IN PROGRESS**  
 - [ ] Prepare app for eBay’s Application Growth Check (compliance, privacy policy, secure redirects, etc.)  
 - [ ] Design integration architecture for **sold listings data**  
-- [ ] Set up mock API to simulate Marketplace Insights response for frontend testing  
-- [ ] Explore scraping (130point or eBay sold listings) as a **temporary personal-use fallback**  
+- [ ] Set up mock API to simulate Marketplace Insights response for frontend testing 
 
 ## 🚧 Known Issues  
 
