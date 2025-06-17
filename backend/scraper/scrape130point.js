@@ -49,6 +49,4 @@ function parseHTML(html) {
     return listings;
 }
   
-  
-
 module.exports = scrape130Point;
