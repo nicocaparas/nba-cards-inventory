@@ -37,7 +37,7 @@ npm start
 ```
 
 ## 🔮 Future Improvements
-- Live market value updates via eBay API (**In Progress... 🔧**)
+- Live market value updates via eBay API (**IN PROGRESS**)
 - Sorting and advanced filtering
 - Card images and more metadata
 - Deployment to Vercel
