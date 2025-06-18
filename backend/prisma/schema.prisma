@@ -23,5 +23,20 @@ model Card {
   saleStatus     String  @default("available")
   createdAt      DateTime @default(now())
 
+  // For price tracking
+  trackPrices    Boolean         @default(false)
+  priceHistory   PriceHistory[]
+
   @@index([playerName])
+}
+
+model PriceHistory {
+  id           Int      @id @default(autoincrement())
+  cardId       Int      // Foreign key to card.id
+  averagePrice Float
+  sampleCount  Int
+  timestamp    DateTime @default(now())
+
+  // Declare a relationship 
+  card         Card     @relation(fields: [cardId], references: [id])
 }

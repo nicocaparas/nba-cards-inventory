@@ -109,9 +109,18 @@ app.use('/api/ebay', ebayRoutes);
 const scrape130Routes = require('./routes/scrape130point');
 app.use('/api/scrape', scrape130Routes);  
 
-
-
 // Start the server 
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
+
+// async function testTrackedCards() {
+//   const trackedCards = await prisma.card.findMany({
+//     where: { trackPrices: true }
+//   });
+
+//   console.log("Tracked cards:", trackedCards);
+// }
+// testTrackedCards()
+//   .catch(e => console.error(e))
+//   .finally(() => prisma.$disconnect());
