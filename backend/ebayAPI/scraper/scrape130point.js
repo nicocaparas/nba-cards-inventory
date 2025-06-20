@@ -32,10 +32,10 @@ async function scrape130Point(query) {
     try {
         const response = await axios.post('https://back.130point.com/sales/', data, { headers });
 
-        console.log('[✅ Response Length]', response.data.length);
+        // For debugging: console.log('[✅ Response Length]', response.data.length);
 
+        // Parse HTML response
         const listings = parseHTML(response.data);
-        console.log('[🧾 Listings Preview]', listings.slice(0, 5));
 
         return listings;
     } catch (err) {
