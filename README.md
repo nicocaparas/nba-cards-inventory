@@ -8,7 +8,7 @@ A full-stack web application to manage, track, and monitor your NBA trading card
 - View cards in a clean, searchable table layout.
 - Hot Cards section featuring top-performing cards.
 - Built with React (Frontend) and Node.js/Express + Prisma (Backend).
-- Future plans: Integrate real-time pricing updates via the eBay API.
+- Integrate real-time pricing updates via the eBay API. ♻️ **IN PROGRESS** ♻️
 
 ## 🛠️ Tech Stack
 - Frontend: React, Tailwind CSS
