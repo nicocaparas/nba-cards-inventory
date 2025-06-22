@@ -20,19 +20,21 @@ const headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
 };
 
-// Sample data format accepted by 130point
-//const data = 'query=anthony%2Bedwards%2Bprizm%2Bsilver%2Bpsa%2B10&type=2&subcat=-1';
-
 async function scrape130Point(query) {
     // Replace spaces with '+' sign since 130point accepts this
     const queryString = query.trim().replace(/\s+/g, '+');
     // Construct query request 
     const data = `query=${encodeURIComponent(queryString)}&type=2&subcat=-1`;
+    console.log(data);
+
+    // For debugging - // Sample data format accepted by 130point: 
+    // const data = 'query=anthony%2Bedwards%2Bprizm%2Bsilver%2Bpsa%2B10&type=2&subcat=-1';
 
     try {
         const response = await axios.post('https://back.130point.com/sales/', data, { headers });
 
-        // For debugging: console.log('[✅ Response Length]', response.data.length);
+        // For debugging - check if a response was returned
+        console.log('[✅ Response Length]', response.data.length);
 
         // Parse HTML response
         const listings = parseHTML(response.data);

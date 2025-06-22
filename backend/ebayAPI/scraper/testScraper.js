@@ -1,6 +1,6 @@
 const scrape130Point = require('./scrape130point');
 
-const query = "2017 tatum prizm silver psa 10"
+const query = "2019 ja morant silver prizm #249 psa 10"
 
 async function testScraper() {
     const listings = await scrape130Point(query);
