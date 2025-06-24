@@ -33,6 +33,11 @@ async function scrape130Point(query) {
     try {
         const response = await axios.post('https://back.130point.com/sales/', data, { headers });
 
+        const fs = require('fs');
+
+        // Save HTML for debugging
+        fs.writeFileSync('130point_response.html', response.data);
+
         // For debugging - check if a response was returned
         console.log('[✅ Response Length]', response.data.length);
 

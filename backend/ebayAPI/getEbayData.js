@@ -1,8 +1,6 @@
 const mockEbayResponse = require('./mocks/mockEbayResponse');
 
 async function getEbayData(query) {
-    // TO DO Create the necessary code to extract the needed data (title, price, and date sold only) 
-    // from mockEbayResponse
 
     console.log(`[🧪 Mocked eBay API call for query]: ${query}`);
     await new Promise(res => setTimeout(res, 100)); // simulate latency
