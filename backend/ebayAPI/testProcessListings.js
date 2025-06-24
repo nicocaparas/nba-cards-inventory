@@ -125,13 +125,12 @@ const dateResult = processListings(testDateListings, query);
 
 // Show output
 // console.log('[📊 Test Result]', titleResult);
-// console.log('[📊 Test Result]', priceResult);
-console.log('[📊 Test Result]', dateResult);
+console.log('[📊 Test Result]', priceResult);
+// console.log('[📊 Test Result]', dateResult);
 
-// BUGS FOUND 
+// BUGS FOUND
 
-// Exact same query but with additional words like "Auto" 
-// Solution: filter out based on average prices, for example: remove outliers 
+// Exact same query but with additional words like "Auto"
+// Solution: filter out based on average prices, for example: remove outliers
 
-// Negative price is still counted for the average 
-// Solution: Add a negative value check to filter out negative values 
+// Implement both isLikelyVariant and removeOutliers functions check ChatGPT 

@@ -2,6 +2,7 @@
 function isValidListing(listing, cutoffStart, cutoffEnd) {
     if (!listing.title || !listing.price || !listing.date) return false;
     if (typeof listing.price !== 'number' || isNaN(listing.price)) return false;
+    if (listing.price <= 0) return false; 
 
     const soldDate = new Date(listing.date);
     if (isNaN(soldDate)) return false;
@@ -16,6 +17,15 @@ function isRelevant(title, query) {
     const lowerTitle = title?.toLowerCase() || "";
     return keywords.every(keyword => lowerTitle.includes(keyword));
   }
+
+// Utility: Filters out listings with prices that are statistical outliers based on deviation from the average.
+function removeOutliers(prices, listings, threshold = 0.3) {
+    const average = prices.reduce((sum, p) => sum + p, 0) / prices.length;
+
+    return listings.filter(l =>
+        Math.abs(l.price - average) / average <= threshold
+    );
+}
 
 /**
  * Filters and analyzes a list of marketplace listings to calculate average price.
