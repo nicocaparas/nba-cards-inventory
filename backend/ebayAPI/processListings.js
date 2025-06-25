@@ -18,14 +18,31 @@ function isRelevant(title, query) {
     return keywords.every(keyword => lowerTitle.includes(keyword));
   }
 
-// Utility: Filters out listings with prices that are statistical outliers based on deviation from the average.
-function removeOutliers(prices, listings, threshold = 0.3) {
-    const average = prices.reduce((sum, p) => sum + p, 0) / prices.length;
+// Heuristic: Checks if title includes variant terms not found in the query
+function isLikelyVariant(title, query) {
+    const titleWords = title.toLowerCase().split(/\s+/);
+    const queryWords = query.toLowerCase().split(/\s+/);
+
+    const variantKeywords = ['auto', 'autograph', 'signed','patch', 'rc', 'refractor', 'mojo', 'green', 'jersey', 'relic', 'fast', 'break'];
+
+    return variantKeywords.some(
+        keyword => titleWords.includes(keyword) && !queryWords.includes(keyword)
+    );
+  }
+
+// Utility: Filters out listings with prices that are statistical outliers based on deviation from the median.
+function removeOutliers(listings, threshold = 0.5) {
+    const prices = listings.map(l => l.price).sort((a, b) => a - b);
+
+    const mid = Math.floor(prices.length / 2);
+    const median = prices.length % 2 === 0
+        ? (prices[mid - 1] + prices[mid]) / 2
+        : prices[mid];
 
     return listings.filter(l =>
-        Math.abs(l.price - average) / average <= threshold
+        Math.abs(l.price - median) / median <= threshold
     );
-}
+  }
 
 /**
  * Filters and analyzes a list of marketplace listings to calculate average price.
@@ -46,22 +63,28 @@ function processListings(listings, query) {
     const cutoffEnd = new Date(now); // End = yesterday (inclusive)
     cutoffEnd.setDate(now.getDate() - 1);
 
-    // Filter listings that are valid (non-null, numeric, recent) and relevant (title matches query)
+    // Step 1: All validation and relevance checks, and remove known variants
     const filteredListings = listings.filter(l =>
-        isValidListing(l, cutoffStart, cutoffEnd) && isRelevant(l.title, query)
+        isValidListing(l, cutoffStart, cutoffEnd) &&
+        isRelevant(l.title, query) &&
+        !isLikelyVariant(l.title, query)
     );
 
-    // Extract the prices from the filtered listings and calculate average 
-    const prices = filteredListings.map(l => l.price);
+    // Step 2: Remove price outliers only if enough data
+    const cleanedListings = filteredListings.length >= 3
+        ? removeOutliers(filteredListings)
+        : filteredListings;
 
-    const averagePrice = prices.length
-        ? prices.reduce((sum, price) => sum + price, 0) / prices.length
+    // Step 3: Compute average
+    const finalPrices = cleanedListings.map(l => l.price);
+    const averagePrice = finalPrices.length
+        ? finalPrices.reduce((sum, p) => sum + p, 0) / finalPrices.length
         : null;
 
     return {
         averagePrice,
-        sampleCount: prices.length,
-        usedListings: filteredListings
+        sampleCount: finalPrices.length,
+        usedListings: cleanedListings
     };
 }
 

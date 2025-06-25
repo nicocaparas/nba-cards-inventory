@@ -15,70 +15,85 @@ const testTitleListings = [
     {
         title: '2020 Zion Williamson Silver Prizm PSA 10', // this works
         price: 200.00,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
         title: '2020 Zion Williamson Silver Prizm PSA 10',
-        price: 300,
-        date: toDateStr(today) // this works too
+        price: 210,
+        date: toDateStr(daysAgo(1)) // Extreme Outlier
+    },
+    {
+        title: '2020 Zion Williamson Silver Prizm PSA 10',
+        price: 100,
+        date: toDateStr(daysAgo(1)) // this works too just on the bottom threshold 
+    },
+    {
+        title: '2020 Zion Williamson Silver Prizm PSA 10',
+        price: 99,
+        date: toDateStr(daysAgo(1)) // this should NOT work - just below the bottom threshold 
+    },
+    {
+        title: '2020 Zion Williamson Silver Prizm PSA 10',
+        price: 1000,
+        date: toDateStr(daysAgo(1)) // Extreme Outlier
     },
     {
         title: '2020 Zion Williamson Silver Prizm PSA 9', // this is only a PSA 9
         price: 150.00,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
-        title: '2020 Zion Williamson Silver Prizm PSA 10 Auto', // same query but with Auto
+        title: '2020 Zion Williamson Silver Prizm PSA 10 Auto', // same query but with Auto should be omitted
         price: 150.00,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
         title: '2019 Zion Williamson Silver Prizm PSA 10', // Different year
         price: 190.00,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
         title: 'Random Card PSA 10', // Completely Different card
         price: 50.00,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     }
 ];
 
 const testPriceListings = [
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
-        price: 300, // valid price 
-        date: toDateStr(today)
+        price: 500, // valid price 
+        date: toDateStr(daysAgo(1)),
     },
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: 0, // treated as invalid 
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: '120', // string instead of number 
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     },
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: NaN,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     }, 
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: null,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     }, 
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: undefined,
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     }, 
     {
         title: "2020 Zion Williamson Silver Prizm PSA 10",
         price: -50, // negative number 
-        date: toDateStr(today)
+        date: toDateStr(daysAgo(1))
     }, 
   ];
 
@@ -124,8 +139,8 @@ const priceResult = processListings(testPriceListings, query);
 const dateResult = processListings(testDateListings, query);
 
 // Show output
-// console.log('[📊 Test Result]', titleResult);
-console.log('[📊 Test Result]', priceResult);
+console.log('[📊 Test Result]', titleResult);
+// console.log('[📊 Test Result]', priceResult);
 // console.log('[📊 Test Result]', dateResult);
 
 // BUGS FOUND
@@ -133,4 +148,4 @@ console.log('[📊 Test Result]', priceResult);
 // Exact same query but with additional words like "Auto"
 // Solution: filter out based on average prices, for example: remove outliers
 
-// Implement both isLikelyVariant and removeOutliers functions check ChatGPT 
+// Implement both isLikelyVariant and removeOutliers functions check ChatGPT
