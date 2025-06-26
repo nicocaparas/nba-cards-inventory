@@ -12,6 +12,7 @@ model Card {
   playerName     String
   year           Int
   cardBrand      String
+  cardNum        Int
   variant        String?  // e.g., "Orange Ice", "My House", "Silver Prizm"
   isRookie       Boolean  @default(false)
   isGraded       Boolean  @default(false)

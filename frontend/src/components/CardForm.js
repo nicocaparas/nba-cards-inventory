@@ -63,6 +63,14 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
                         required
                     />
                     <input
+                        type="number"
+                        placeholder="Card Number"
+                        value={formData.cardNum}
+                        onChange={(e) => setFormData({ ...formData, cardNum: parseFloat(e.target.value) })}
+                        className="border p-2 rounded"
+                        required
+                    />
+                    <input
                         type="text"
                         placeholder="Variant"
                         value={formData.variant}

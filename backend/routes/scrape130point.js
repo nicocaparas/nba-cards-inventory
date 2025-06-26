@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const scrape130Point = require('../scraper/scrape130point');
+const scrape130Point = require('../ebayAPI/scraper/scrape130point');
 
 router.get('/', async (req, res) => {
     const query = req.query.q;
