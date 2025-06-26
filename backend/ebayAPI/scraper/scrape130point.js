@@ -36,7 +36,7 @@ async function scrape130Point(query) {
         const fs = require('fs');
 
         // Save HTML for debugging
-        fs.writeFileSync('130point_response.html', response.data);
+        // fs.writeFileSync('130point_response.html', response.data);
 
         // For debugging - check if a response was returned
         console.log('[✅ Response Length]', response.data.length);

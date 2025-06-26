@@ -18,6 +18,7 @@ function AddCardPage() {
         grader: '',
         grade: '',
         acquirePrice: '',
+        trackPrices: false,
     });
 
     // Submits the form to add a new card:
@@ -53,6 +54,7 @@ function AddCardPage() {
                     grader: '',
                     grade: '',
                     acquirePrice: '',
+                    trackPrices: false,
                 });
             })
             .catch((error) => {

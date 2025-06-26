@@ -132,14 +132,36 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
             {/* Price Info */}
             <div>
                 <h3 className="text-lg font-semibold mb-2">Pricing Info</h3>
-                <input
-                    type="number"
-                    placeholder="Acquire Price"
-                    value={formData.acquirePrice}
-                    onChange={(e) => setFormData({ ...formData, acquirePrice: parseFloat(e.target.value) })}
-                    className="border p-2 rounded"
-                    step="0.01"
-                />
+                <div className="flex items-center gap-4">
+                    <input
+                        type="number"
+                        placeholder="Acquire Price"
+                        value={formData.acquirePrice}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                acquirePrice: parseFloat(e.target.value),
+                            })
+                        }
+                        className="border p-2 rounded"
+                        step="0.01"
+                    />
+
+                    {/* Track Prices Checkbox */}
+                    <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={formData.trackPrices}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    trackPrices: e.target.checked,
+                                })
+                            }
+                        />
+                        Track Prices
+                    </label>
+                </div>
             </div>
 
             {/* Submit Button */}

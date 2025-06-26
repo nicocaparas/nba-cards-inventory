@@ -23,7 +23,7 @@ function isLikelyVariant(title, query) {
     const titleWords = title.toLowerCase().split(/\s+/);
     const queryWords = query.toLowerCase().split(/\s+/);
 
-    const variantKeywords = ['auto', 'autograph', 'signed','patch', 'rc', 'refractor', 'mojo', 'green', 'jersey', 'relic', 'fast', 'break'];
+    const variantKeywords = ['auto', 'autograph', 'signed','patch', 'refractor', 'mojo', 'green', 'jersey', 'relic', 'fast', 'break'];
 
     return variantKeywords.some(
         keyword => titleWords.includes(keyword) && !queryWords.includes(keyword)
@@ -89,3 +89,11 @@ function processListings(listings, query) {
 }
 
 module.exports = processListings;
+
+// ✅ Only run this block if the file is run directly (not imported)
+if (require.main === module) {
+    const result = processListings(sampleListings, query);
+
+    console.log('✅ processListings Debug Result:');
+    console.log(JSON.stringify(result, null, 2));
+}

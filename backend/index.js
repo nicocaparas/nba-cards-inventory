@@ -46,6 +46,7 @@ app.post('/cards', async (req, res) => {
       grader,
       grade,
       acquirePrice,
+      trackPrices,
     } = req.body;
 
     const newCard = await prisma.card.create({
@@ -60,6 +61,7 @@ app.post('/cards', async (req, res) => {
         grader,
         grade,
         acquirePrice,
+        trackPrices,
       },
     });
 

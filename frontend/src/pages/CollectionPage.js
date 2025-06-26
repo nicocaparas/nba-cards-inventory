@@ -19,6 +19,7 @@ function CollectionPage() {
         grader: '',
         grade: '',
         acquirePrice: '',
+        trackPrices: false,
     });
 
     // Function to handle deleting a card by its ID
@@ -54,6 +55,7 @@ function CollectionPage() {
             grader: card.grader || '',
             grade: card.grade || '',
             acquirePrice: card.acquirePrice || '',
+            trackPrices: card.trackPrices || false,
         });
     };
 
