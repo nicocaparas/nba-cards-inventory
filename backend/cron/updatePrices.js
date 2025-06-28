@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const scrape130Point = require('../ebayAPI/scraper/scrape130point.js');
-// const getEbayData = require('../ebayAPI/mock/getEbayData'); // swap later
+// const scrape130Point = require('../ebayAPI/scraper/scrape130point.js');
+const getEbayData = require('../ebayAPI/getEbayData.js'); 
 const processListings = require('../ebayAPI/processListings.js');
 
 async function updatePrices() {
@@ -18,7 +18,7 @@ async function updatePrices() {
         console.log(`[🔍 Fetching for]: ${query}`);
 
         // STEP 1: Scrape listings
-        const listings = await scrape130Point(query);
+        const listings = await getEbayData(query);
 
         // STEP 2: Process listings
         const { averagePrice, sampleCount, usedListings } = processListings(listings, query);
