@@ -37,7 +37,7 @@ function Navbar() {
                     Collection
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                     to="/ebay-test"
                     className={({ isActive }) =>
                         isActive
@@ -46,7 +46,7 @@ function Navbar() {
                     }
                 >
                     Ebay Test
-                </NavLink>
+                </NavLink> */}
             </div>
         </nav>
     );
