@@ -105,9 +105,13 @@ app.delete('/cards/:id', async (req, res) => {
   }
 });
 
-// Ebay API access route 
-const ebayRoutes = require('./routes/ebay');
-app.use('/api/ebay', ebayRoutes);
+// Ebay Finding API access route 
+// const ebayRoutes = require('./routes/ebayFindingAPI');
+// app.use('/api/ebay', ebayRoutes);
+
+// Ebay Extract Value route 
+const ebayExtractRoutes = require('./routes/ebayExtract.js'); 
+app.use('/api/ebay-extract', ebayExtractRoutes);
 
 // Start the server 
 app.listen(PORT, () => {

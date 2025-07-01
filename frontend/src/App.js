@@ -5,6 +5,7 @@ import AddCardPage from './pages/AddCardPage';
 import CollectionPage from './pages/CollectionPage';
 //import EbayTest from './pages/EbayTest';
 import Navbar from './components/Navbar';
+import ExtractValue from './pages/ExtractValue';
 
 import { CardsProvider } from './context/CardsContext'; 
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/add-card" element={<AddCardPage />} />
             <Route path="/collection" element={<CollectionPage />} />
+            <Route path="/extract" element={<ExtractValue />} />
             {/* <Route path="/ebay-test" element={<EbayTest />} /> */} 
           </Routes>
         </div>
