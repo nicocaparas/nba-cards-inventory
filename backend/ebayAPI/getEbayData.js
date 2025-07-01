@@ -2,8 +2,8 @@ const mockEbayResponse = require('./mocks/mockEbayResponse');
 
 async function getEbayData(query) {
 
-    // Check if the query from the frontend was recieved but do not use for now. 
-    console.log('Received query:', query);
+    // Check if the query from the frontend was recieved - for debugging
+    // console.log('Received query:', query);
 
     await new Promise(res => setTimeout(res, 100)); // simulate latency
 

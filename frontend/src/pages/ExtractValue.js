@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ExtractValue = () => {
     const [query, setQuery] = useState('Apple iPhone 8 64GB');
@@ -13,6 +13,9 @@ const ExtractValue = () => {
         setError(null);
 
         try {
+            // Simulate delay — e.g. 1.5 seconds
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
             const response = await fetch(`/api/ebay-extract/analyze?query=${encodeURIComponent(query)}`);
             const data = await response.json();
             setResult(data);
@@ -24,12 +27,22 @@ const ExtractValue = () => {
         }
     };
 
+    useEffect(() => {
+        handleSearch();
+    }, []);
+
     return (
         <div className="max-w-4xl mx-auto px-4 py-2">
             {/* Page Title */}
             <h2 className="text-3xl font-bold text-center text-blue-600 mb-10">
                 Extract Card Average Value
             </h2>
+
+            <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
+                <strong>Note:</strong> This demo automatically loads results for “Apple iPhone 8 64GB” using mock data.
+                Searching for other terms is not supported yet, as the live eBay API integration is still pending approval.
+            </p>
+
 
             {/* Search Section */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
@@ -65,7 +78,7 @@ const ExtractValue = () => {
                 <div className="bg-white rounded-2xl shadow p-6 mt-8">
                     <h3 className="text-3xl font-bold text-blue-500 mb-4">Results</h3>
 
-                    <p className="text-sm text-gray-500 mt-4 mb-4">
+                    <p className="text-sm text-gray-600 mt-4 mb-4">
                         <strong>Disclaimer:</strong> The results shown below are based on mock data
                         for demonstration purposes only. This page simulates how the application
                         will display average prices and sample listings once connected to the live

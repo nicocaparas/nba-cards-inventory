@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const getEbayData = require('../ebayAPI/getEbayData');
-const processListings = require('../ebayAPI/processListings');
+//const processListings = require('../ebayAPI/processListings');
 
 router.get('/analyze', async (req, res) => {
     try {
@@ -12,6 +12,12 @@ router.get('/analyze', async (req, res) => {
             return res.status(400).json({ error: 'Missing query parameter.' });
         }
 
+        /**
+         * TODO:
+         * Replace this mock data call with a real request
+         * to eBay's Finding API once API keys are approved.
+         */
+        
         // Call your mocked function
         const listings = await getEbayData(query); // This is a mock
         
