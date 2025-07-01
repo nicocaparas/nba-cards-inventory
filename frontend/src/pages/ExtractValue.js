@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const ExtractValue = () => {
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState('Apple iPhone 8 64GB');
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -63,22 +63,37 @@ const ExtractValue = () => {
             {/* Results */}
             {result && (
                 <div className="bg-white rounded-2xl shadow p-6 mt-8">
-                    <h3 className="text-2xl font-bold text-blue-500 mb-4">Results</h3>
+                    <h3 className="text-3xl font-bold text-blue-500 mb-4">Results</h3>
+
+                    <p className="text-sm text-gray-500 mt-4 mb-4">
+                        <strong>Disclaimer:</strong> The results shown below are based on mock data
+                        for demonstration purposes only. This page simulates how the application
+                        will display average prices and sample listings once connected to the live
+                        eBay API. The listings and prices shown are not real eBay data and do not
+                        reflect actual search results.
+                    </p>
 
                     <div className="mb-4">
-                        <p className="text-lg">
+                        <h4 className="text-2xl font-extrabold text-gray-800 mb-2">
+                            Item Name: Apple iPhone 8 64GB
+                        </h4>
+
+                        <p className="text-2xl">
                             <span className="font-bold text-gray-700">Average Price:</span>{' '}
                             <span className="text-green-600 font-bold">
                                 ${result.averagePrice?.toFixed(2)}
                             </span>
                         </p>
-                        <p className="text-lg">
+                        <p className="text-2xl">
                             <span className="font-bold text-gray-700">Sample Count:</span>{' '}
                             {result.sampleCount}
                         </p>
                     </div>
 
-                    <h4 className="text-xl font-bold text-gray-800 mb-3">
+                    {/* Adds a horizontal line */}
+                    <hr className="my-4 border-gray-200" />
+
+                    <h4 className="text-2xl font-bold text-gray-800 mb-3">
                         Sample Listings
                     </h4>
                     <ul className="space-y-3">

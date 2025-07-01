@@ -18,6 +18,7 @@ async function getEbayData(query) {
     return simplifiedListings;
 }
 
+// For debugging
 // getEbayData("Test").then(listings => {
 //     console.log('[📦 Listings]', listings);
 // });
