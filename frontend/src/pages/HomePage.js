@@ -12,13 +12,23 @@ function HomePage() {
     ); 
 
     return (
-        <div>
+        <div className="-mt-7">
+            <div className="flex justify-center mb-6">
+                <div className="inline-block text-center bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded p-3">
+                    Tip: Use the menu above to add cards, manage your collection, or try the "Get eBay Values" feature to analyze market prices.
+                </div>
+            </div>
+
             {/* Website Title */}
-            <h1 className="text-3xl font-bold text-center text-blue-600 mb-10">
+            <h1 className="text-5xl font-bold text-center text-blue-600 mb-10">
                 NBA Card Inventory
             </h1>
 
             {/* Search Bar */}
+            <p className="text-center text-gray-600 mb-6">
+                Search your collection to quickly find NBA cards you’ve added.
+            </p>
+
             <div className="mb-10 flex justify-center">
                 <input
                     type="text"
@@ -60,10 +70,14 @@ function HomePage() {
 
             {/* Hot Cards Section */}
 
-            <div className="mb-10">
-                <h2 className="text-2xl font-bold text-center text-red-500 mb-6">
+            <div className="mb-10 bg-gray-50 p-6 rounded-lg shadow">
+                <h2 className="text-3xl font-bold text-center text-red-500 mb-6">
                     🔥 Hot Cards 🔥
                 </h2>
+
+                <p className="text-center text-sm text-gray-500 mb-6">
+                    Demo data only. The Hot Cards shown here are fictional and do not reflect actual market trends.
+                </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {/* Hot card 1 */}
@@ -87,12 +101,6 @@ function HomePage() {
                         <p className="text-green-600 font-bold mt-2">+10% ↑</p>
                     </div>
 
-                    {/* Hot card 4 */}
-                    <div className="border p-5 rounded-lg shadow hover:shadow-lg transition">
-                        <h3 className="text-xl font-bold">Giannis Antetokounmpo</h3>
-                        <p className="text-gray-600">Select - 2013</p>
-                        <p className="text-green-600 font-bold mt-2">+10% ↑</p>
-                    </div>
                 </div>
             </div>
         </div>

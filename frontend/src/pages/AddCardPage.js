@@ -65,10 +65,15 @@ function AddCardPage() {
     
     return (
         <div>
-            <div className="mb-10">
-                <h2 className="text-2xl font-bold text-center text-blue-500 mb-6">
+            <div className="mb-10 -mt-7">
+                <h2 className="text-3xl font-bold text-center text-blue-500 mb-6">
                     ➕ Add New Card
                 </h2>
+
+                <p className="text-center text-gray-600 mb-6">
+                    Fill in the details below to add a new card to your collection.
+                </p>
+
                 <CardForm
                     formData={newCard}
                     setFormData={setNewCard}

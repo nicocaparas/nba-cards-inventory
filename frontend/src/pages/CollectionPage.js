@@ -86,8 +86,8 @@ function CollectionPage() {
     return (
         <div>
             {/* Card List */}
-            <div className="mb-10">
-                <h2 className="text-2xl font-bold text-center text-green-500 mb-6">
+            <div className="mb-10 -mt-7">
+                <h2 className="text-3xl font-bold text-center text-green-500 mb-12">
                     📚 Your Collection
                 </h2>
 
