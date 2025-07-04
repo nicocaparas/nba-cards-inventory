@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const ExtractValue = () => {
     const [query, setQuery] = useState('Apple iPhone 8 64GB');
@@ -6,7 +6,7 @@ const ExtractValue = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleSearch = async () => {
+    const handleSearch = useCallback(async () => {
         if (!query) return;
 
         setLoading(true);
@@ -25,17 +25,17 @@ const ExtractValue = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [query]);
 
     useEffect(() => {
         handleSearch();
-    }, []);
+    }, [handleSearch]);
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-2">
+        <div className="max-w-4xl mx-auto px-4 mb-10 -mt-7">
             {/* Page Title */}
-            <h2 className="text-3xl font-bold text-center text-blue-600 mb-10">
-                Extract Card Average Value
+            <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
+                📈 Extract Card Average Value
             </h2>
 
             <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
@@ -92,7 +92,7 @@ const ExtractValue = () => {
                         </h4>
 
                         <p className="text-2xl">
-                            <span className="font-bold text-gray-700">Average Price:</span>{' '}
+                            <span className="font-bold text-gray-700">Average Value:</span>{' '}
                             <span className="text-green-600 font-bold">
                                 ${result.averagePrice?.toFixed(2)}
                             </span>

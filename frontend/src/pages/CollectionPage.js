@@ -87,9 +87,17 @@ function CollectionPage() {
         <div>
             {/* Card List */}
             <div className="mb-10 -mt-7">
-                <h2 className="text-3xl font-bold text-center text-green-500 mb-12">
+                <h2 className="text-3xl font-bold text-center text-green-500 mb-6">
                     📚 Your Collection
                 </h2>
+
+                <p className="text-center text-gray-600 mb-6">
+                    View all the NBA cards you’ve added to your collection, including player details, card info, and prices
+                </p>
+
+                <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
+                    <strong>Note:</strong> This page shows the user’s saved collection. It lists key details like player name, card brand, the user’s acquisition price, etc. This table does not include eBay data—it only reflects the user’s personal entries.
+                </p>
 
                 <div className="flex flex-col gap-6">
                     {cards.map((card) => (
