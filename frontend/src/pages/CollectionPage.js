@@ -31,6 +31,7 @@ function CollectionPage() {
             })
             .catch((error) => {
                 console.error('Error deleting card:', error);
+                alert('Failed to delete card. Please try again later.');
             });
     };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 const ExtractValue = () => {
     const [query, setQuery] = useState('Apple iPhone 8 64GB');
@@ -6,10 +6,11 @@ const ExtractValue = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleSearch = useCallback(async () => {
+    const handleSearch = async () => {
         if (!query) return;
 
         setLoading(true);
+        setResult(null);
         setError(null);
 
         try {
@@ -18,18 +19,28 @@ const ExtractValue = () => {
 
             const response = await fetch(`/api/ebay-extract/analyze?query=${encodeURIComponent(query)}`);
             const data = await response.json();
+
+            // If backend returns error then display error 
+            if (!response.ok) {
+                setError(data.error || 'Failed to fetch data.');
+                return;
+              }
+
             setResult(data);
         } catch (err) {
             console.error(err);
-            setError('Failed to fetch data.');
+            setError('Network error. Please check your connection and try again.');
+            alert('Network error. Please check your connection and try again.');
         } finally {
             setLoading(false);
         }
-    }, [query]);
+    };
 
+    // REMOVE THIS WHEN LIVE
     useEffect(() => {
         handleSearch();
-    }, [handleSearch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="max-w-4xl mx-auto px-4 mb-10 -mt-7">
@@ -39,8 +50,8 @@ const ExtractValue = () => {
             </h2>
 
             <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
-                <strong>Note:</strong> This demo automatically loads results for “Apple iPhone 8 64GB” using mock data.
-                Searching for other terms is not supported yet, as the live eBay API integration is still pending approval.
+                <strong>Note:</strong> This demo automatically loads results for “Apple iPhone 8 64GB” using mock data. 
+                Searching for any other terms will result in an error, as the live eBay API integration is still pending approval.
             </p>
 
 

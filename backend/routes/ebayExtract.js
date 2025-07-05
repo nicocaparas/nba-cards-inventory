@@ -34,7 +34,7 @@ router.get('/analyze', async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Something went wrong.' });
+        res.status(500).json({ error: 'Failed to extract listings. Please try again later.' });
     }
 });
 

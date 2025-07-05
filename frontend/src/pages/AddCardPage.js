@@ -59,6 +59,7 @@ function AddCardPage() {
             })
             .catch((error) => {
                 console.error('Error adding card:', error);
+                alert('Failed to add the card. Please try again later.');
             });
     };  
 

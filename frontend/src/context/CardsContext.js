@@ -20,6 +20,7 @@ export function CardsProvider({ children }) {
             })
             .catch((error) => {
                 console.error('Error fetching cards:', error);
+                alert('Failed to load cards. Please try again later.');
             });
     };
 

@@ -1,9 +1,12 @@
 const mockEbayResponse = require('./mocks/mockEbayResponse');
 
 async function getEbayData(query) {
+    if (query !== "Apple iPhone 8 64GB") {
+        throw new Error("Only 'Apple iPhone 8 64GB' is supported in the mock API.");
+    }      
 
     // Check if the query from the frontend was recieved - for debugging
-    // console.log('Received query:', query);
+    //console.log('Received query:', query);
 
     await new Promise(res => setTimeout(res, 100)); // simulate latency
 
