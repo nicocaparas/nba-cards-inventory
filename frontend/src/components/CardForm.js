@@ -30,20 +30,19 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
         // Card Number
         if (
             !formData.cardNum?.toString().trim() ||
-            isNaN(Number(formData.cardNum))
+            (isNaN(Number(formData.cardNum)) || Number(formData.cardNum) < 0)
         ) {
-            newErrors.cardNum = "Card number is required and must be a valid number.";
+            newErrors.cardNum = "Card number must be a valid number.";
           }
 
         // Acquire Price (optional, but check if entered)
-        if (formData.acquirePrice !== undefined && formData.acquirePrice !== null) {
-            if (
-                formData.acquirePrice !== "" &&
-                (isNaN(formData.acquirePrice) || formData.acquirePrice < 0)
-            ) {
-                newErrors.acquirePrice = "Acquire price must be a positive number.";
-            }
-        }
+        if (
+            formData.acquirePrice !== "" &&
+            formData.acquirePrice !== null &&
+            (isNaN(formData.acquirePrice) || formData.acquirePrice < 0)
+        ) {
+            newErrors.acquirePrice = "Acquire price must be a positive number.";
+          }
 
         // Graded Fields (if grading enabled)
         if (formData.isGraded) {
@@ -86,34 +85,41 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
             <div>
                 <h3 className="text-lg font-semibold mb-2">Player Info</h3>
                 <div className="grid grid-cols-2 gap-4">
-                    <input
-                        type="text"
-                        placeholder="Player Name"
-                        value={formData.playerName}
-                        onChange={(e) => setFormData({ ...formData, playerName: e.target.value })}
-                        className="border p-2 rounded"
-                    />
-                    {errors.playerName && (
-                        <p className="text-red-500 text-sm mt-1">{errors.playerName}</p>
-                    )}
-                    <input
-                        type="number"
-                        placeholder="Year"
-                        value={formData.year}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                year:
-                                    e.target.value === ""
-                                        ? ""
-                                        : parseInt(e.target.value, 10),
-                            })
-                          }
-                        className="border p-2 rounded"
-                    />
-                    {errors.year && (
-                        <p className="text-red-500 text-sm mt-1">{errors.year}</p>
-                    )}
+                    <div className="flex flex-col">
+                        <input
+                            type="text"
+                            placeholder="Player Name"
+                            value={formData.playerName}
+                            onChange={(e) =>
+                                setFormData({ ...formData, playerName: e.target.value })
+                            }
+                            className="border p-2 rounded"
+                        />
+                        {errors.playerName && (
+                            <p className="text-red-500 text-sm mt-2 ml-1">{errors.playerName}</p>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col">
+                        <input
+                            type="number"
+                            placeholder="Year"
+                            value={formData.year}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    year:
+                                        e.target.value === ""
+                                            ? ""
+                                            : parseInt(e.target.value, 10),
+                                })
+                            }
+                            className="border p-2 rounded"
+                        />
+                        {errors.year && (
+                            <p className="text-red-500 text-sm mt-2 ml-1">{errors.year}</p>
+                        )}
+                    </div>
                 </div>
 
                 {/* Rookie Checkbox */}
@@ -123,6 +129,7 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
                             type="checkbox"
                             checked={formData.isRookie}
                             onChange={(e) => setFormData({ ...formData, isRookie: e.target.checked })}
+                            className="w-6 h-6 accent-blue-600"
                         />
                         Rookie Card
                     </label>
@@ -131,36 +138,41 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
 
             {/* Card Info */}
             <div>
-                <h3 className="text-lg font-semibold mb-2">Card Info</h3>
+                <h3 className="text-lg font-semibold mb-2 -mt-2">Card Info</h3>
                 <div className="grid grid-cols-2 gap-4">
-                    <input
-                        type="text"
-                        placeholder="Card Brand"
-                        value={formData.cardBrand}
-                        onChange={(e) => setFormData({ ...formData, cardBrand: e.target.value })}
-                        className="border p-2 rounded"
-                    />
-                    {errors.cardBrand && (
-                        <p className="text-red-500 text-sm mt-1">{errors.cardBrand}</p>
-                    )}
-                    <input
-                        type="number"
-                        placeholder="Card Number"
-                        value={formData.cardNum}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                cardNum:
-                                    e.target.value === ""
-                                        ? ""
-                                        : parseFloat(e.target.value),
-                            })
-                          }
-                        className="border p-2 rounded"
-                    />
-                    {errors.cardNum && (
-                        <p className="text-red-500 text-sm mt-1">{errors.cardNum}</p>
-                    )}
+                    <div className="flex flex-col">
+                        <input
+                            type="text"
+                            placeholder="Card Brand"
+                            value={formData.cardBrand}
+                            onChange={(e) => setFormData({ ...formData, cardBrand: e.target.value })}
+                            className="border p-2 rounded"
+                        />
+                        {errors.cardBrand && (
+                            <p className="text-red-500 text-sm mt-2 ml-1">{errors.cardBrand}</p>
+                        )}
+                    </div>
+                    <div className="flex flex-col">
+                        <input
+                            type="number"
+                            placeholder="Card Number"
+                            value={formData.cardNum}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    cardNum:
+                                        e.target.value === ""
+                                            ? ""
+                                            : parseFloat(e.target.value),
+                                })
+                            }
+                            className="border p-2 rounded"
+                        />
+                        {errors.cardNum && (
+                            <p className="text-red-500 text-sm mt-2 ml-1">{errors.cardNum}</p>
+                        )}
+                    </div>
+                    
                     <input
                         type="text"
                         placeholder="Variant"
@@ -179,6 +191,7 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
                             type="checkbox"
                             checked={formData.isGraded}
                             onChange={(e) => setFormData({ ...formData, isGraded: e.target.checked })}
+                            className="w-6 h-6 accent-blue-600"
                         /> Graded
                     </label>
                 </div>
@@ -187,44 +200,45 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
                         <h3 className="text-lg font-semibold mb-2">Grading Info</h3>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <select
-                                value={formData.grader}
-                                onChange={(e) => setFormData({ 
-                                    ...formData, 
-                                    grader: e.target.value.trim() === '' ? null : e.target.value.trim() })}
-                                className="border p-2 rounded"
-                            >
-                                <option value="">Select Grader</option>
-                                <option value="PSA">PSA</option>
-                                <option value="BGS">BGS</option>
-                            </select>
-                            {errors.grader && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.grader}
-                                </p>
-                            )}
-
-                            <select
-                                value={formData.grade}
-                                onChange={(e) => setFormData({ 
-                                    ...formData, 
-                                    grade: e.target.value === '' ? null : parseFloat(e.target.value) })}
-                                className="border p-2 rounded"
-                            >
-                                <option value="">Select Grade</option>
-                                <option value="10">10</option>
-                                <option value="9.5">9.5</option>
-                                <option value="9">9</option>
-                                <option value="8.5">8.5</option>
-                                <option value="8">8</option>
-                                <option value="7.5">7.5</option>
-                                <option value="7">7</option>
-                            </select>
-                            {errors.grade && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.grade}
-                                </p>
-                            )}
+                            <div className="flex flex-col">
+                                <select
+                                    value={formData.grader}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        grader: e.target.value.trim() === '' ? null : e.target.value.trim()
+                                    })}
+                                    className="border p-2 rounded"
+                                >
+                                    <option value="">Select Grader</option>
+                                    <option value="PSA">PSA</option>
+                                    <option value="BGS">BGS</option>
+                                </select>
+                                {errors.grader && (
+                                    <p className="text-red-500 text-sm mt-2 ml-1">{errors.grader}</p>
+                                )}
+                            </div>
+                            <div className="flex flex-col">
+                                <select
+                                    value={formData.grade}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        grade: e.target.value === '' ? null : parseFloat(e.target.value)
+                                    })}
+                                    className="border p-2 rounded"
+                                >
+                                    <option value="">Select Grade</option>
+                                    <option value="10">10</option>
+                                    <option value="9.5">9.5</option>
+                                    <option value="9">9</option>
+                                    <option value="8.5">8.5</option>
+                                    <option value="8">8</option>
+                                    <option value="7.5">7.5</option>
+                                    <option value="7">7</option>
+                                </select>
+                                {errors.grade && (
+                                    <p className="text-red-500 text-sm mt-2 ml-1">{errors.grade}</p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -234,37 +248,41 @@ function CardForm({ formData, setFormData, handleSubmit, isEditMode, setEditingC
             <div>
                 <h3 className="text-lg font-semibold mb-2">Pricing Info</h3>
                 <div className="flex items-center gap-4">
-                    <input
-                        type="number"
-                        placeholder="Acquire Price"
-                        value={formData.acquirePrice}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                acquirePrice: e.target.value === "" ? "" : parseFloat(e.target.value),
-                            })
-                          }
-                        className="border p-2 rounded"
-                        step="0.01"
-                    />
-                    {errors.acquirePrice && (
-                        <p className="text-red-500 text-sm mt-1">{errors.acquirePrice}</p>
-                    )}
-
-                    {/* Track Prices Checkbox */}
-                    <label className="flex items-center gap-2">
+                    <div className="flex flex-col">
                         <input
-                            type="checkbox"
-                            checked={formData.trackPrices}
+                            type="number"
+                            placeholder="Acquire Price"
+                            value={formData.acquirePrice}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    trackPrices: e.target.checked,
+                                    acquirePrice: e.target.value === "" ? "" : parseFloat(e.target.value),
                                 })
                             }
+                            className="border p-2 rounded"
+                            step="0.01"
                         />
-                        Track Prices
-                    </label>
+                        {errors.acquirePrice && (
+                            <p className="text-red-500 text-sm mt-2 ml-1">{errors.acquirePrice}</p>
+                        )}
+                        {/* Track Prices Checkbox */}
+                        <label className="flex items-center gap-2 mt-4">
+                            <input
+                                type="checkbox"
+                                checked={formData.trackPrices}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        trackPrices: e.target.checked,
+                                    })
+                                }
+                                className="w-6 h-6 accent-blue-600"
+                            />
+                            Track Prices
+                        </label>
+                    </div>
+
+                    
                 </div>
             </div>
 
