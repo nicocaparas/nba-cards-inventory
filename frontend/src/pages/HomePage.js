@@ -56,7 +56,11 @@ function HomePage() {
                                 >
                                     <div>
                                         <h3 className="text-lg font-bold">{card.playerName}</h3>
-                                        <p className="text-gray-600">{card.cardBrand}</p>
+                                        <p className="text-gray-600 text-sm">
+                                            {[card.year, card.cardBrand, card.variant, card.isGraded ? `${card.grader} ${card.grade}` : null]
+                                                .filter(Boolean)
+                                                .join(' ')}
+                                        </p>
                                     </div>
                                     {/* Placeholder for action buttons (optional) */}
                                 </div>
