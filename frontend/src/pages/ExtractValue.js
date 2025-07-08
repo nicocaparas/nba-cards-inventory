@@ -124,10 +124,18 @@ const ExtractValue = () => {
                         {result.usedListings?.map((item, index) => (
                             <li
                                 key={index}
-                                className="flex justify-between items-center border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition"
+                                className="flex justify-between items-center border border-gray-200 rounded-lg p-4"
                             >
                                 <div className="flex-1">
                                     <p className="font-bold text-gray-700">{item.title}</p>
+                                    <a
+                                        href={item.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 underline hover:text-blue-800 text-sm mt-1 inline-block"
+                                    >
+                                        View on eBay
+                                    </a>
                                     <p className="text-gray-500 text-sm">
                                         Sold on {item.date}
                                     </p>

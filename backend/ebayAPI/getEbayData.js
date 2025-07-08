@@ -15,7 +15,8 @@ async function getEbayData(query) {
     const simplifiedListings = mockEbayResponse.itemSales.map(item => ({
         title: item.title,
         price: item.lastSoldPrice?.value ? parseFloat(item.lastSoldPrice.value) : null,
-        date: item.lastSoldDate?.split('T')[0] || null
+        date: item.lastSoldDate?.split('T')[0] || null,
+        url: item.itemWebUrl || null
     }));
 
     return simplifiedListings;
