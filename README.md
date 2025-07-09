@@ -2,6 +2,10 @@
 
 A full-stack web application to manage, track, and monitor your NBA trading card collection.
 
+> **Note:**  
+> Currently, the main branch includes only code relevant for the eBay application submission.  
+> Additional features like the eBay Finding API, web scraping, and Marketplace API integrations are stored in separate feature branches and will be merged as needed.
+
 ## 🚀 Features
 - Add new cards with player name, year, brand, variant, grading info, and price.
 - Edit and delete cards in your collection.
