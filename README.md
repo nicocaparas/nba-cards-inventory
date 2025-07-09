@@ -2,10 +2,6 @@
 
 A full-stack web application to manage, track, and monitor your NBA trading card collection.
 
-> **Note:**  
-> Currently, the main branch includes only code relevant for the eBay application submission.  
-> Additional features like the eBay Finding API, web scraping, and Marketplace API integrations are stored in separate feature branches and will be merged as needed.
-
 ## 🚀 Features
 - Add new cards with player name, year, brand, variant, grading info, and price.
 - Edit and delete cards in your collection.
@@ -41,7 +37,7 @@ npm start
 ```
 
 ## 🔮 Future Improvements
-- Live market value updates via eBay API ♻️ **IN PROGRESS** 
+- Live market value updates via eBay API 
 - Sorting and advanced filtering
 - Card images and more metadata
 - Deployment to Vercel
@@ -51,6 +47,10 @@ npm start
 - 🔍 This app originally intended to use eBay’s Finding API (findCompletedItems) to track sold card prices, but the API is deprecated.
 - 🔄 I'm now working toward integrating the Marketplace Insights API, which provides sales history data.
 - 🛠️ Integration requires passing eBay’s Application Growth Check, so the process involves multiple compliance and development steps.
+
+> **Note:**  
+> Currently, the main branch includes only code relevant for the eBay application submission.  
+> Additional features like the eBay Finding API, web scraping, and Marketplace API integrations are stored in separate feature branches and will be merged as needed.
 
 ## 📄 License
 This project is licensed under the MIT License.
