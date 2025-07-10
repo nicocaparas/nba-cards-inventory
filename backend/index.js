@@ -8,7 +8,13 @@ require('dotenv').config(); // Load env variables
 const app = express();
 const prisma = new PrismaClient();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',             // local dev frontend
+    'https://your-frontend.vercel.app'   // production frontend
+  ],
+}));
+
 app.use(express.json()); // parses incoming JSON in POST/PUT requests so you can use req.body
 
 // Set Port 
@@ -115,5 +121,6 @@ app.use('/api/ebay-extract', ebayExtractRoutes);
 
 // Start the server 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  // console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
