@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 app.use(cors({
   origin: [
     'http://localhost:3000',             // local dev frontend
-    'https://your-frontend.vercel.app'   // production frontend
+    'https://nba-cards-inventory.vercel.app'   // production frontend
   ],
 }));
 
