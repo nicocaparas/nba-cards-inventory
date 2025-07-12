@@ -17,7 +17,9 @@ const ExtractValue = () => {
             // Simulate delay — e.g. 1.5 seconds
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            const response = await fetch(`/api/ebay-extract/analyze?query=${encodeURIComponent(query)}`);
+            const response = await fetch(
+                `${process.env.REACT_APP_BASE_URL}/api/ebay-extract/analyze?query=${encodeURIComponent(query)}`
+            );
             const data = await response.json();
 
             // If backend returns error then display error 

@@ -10,7 +10,7 @@ export function CardsProvider({ children }) {
 
     // Function to fetch cards from backend
     const fetchCards = () => {
-        axios.get('http://localhost:5000/cards')
+        axios.get(`${process.env.REACT_APP_BASE_URL}/cards`)
             .then((response) => {
                 // Sort cards by playerName (A → Z)
                 const sortedCards = response.data.sort((a, b) =>

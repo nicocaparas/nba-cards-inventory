@@ -36,7 +36,7 @@ function AddCardPage() {
         };
 
         // Sends card data to the backend
-        axios.post('http://localhost:5000/cards', cardData)
+        axios.post(`${process.env.REACT_APP_BASE_URL}/cards`, cardData)
             .then((response) => {
                 // Backend sends card data back once successfully added to the database
                 const createdCard = response.data;

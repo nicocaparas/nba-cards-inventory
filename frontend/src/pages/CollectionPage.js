@@ -24,7 +24,7 @@ function CollectionPage() {
 
     // Function to handle deleting a card by its ID
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:5000/cards/${id}`)
+        axios.delete(`${process.env.REACT_APP_BASE_URL}/cards/${id}`)
             .then(() => {
                 // Remove the card from card context 
                 setCards((prevCards) => prevCards.filter((card) => card.id !== id));
@@ -72,7 +72,7 @@ function CollectionPage() {
         };
 
         try {
-            const response = await axios.put(`http://localhost:5000/cards/${editingCard.id}`, cleanedData);
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/cards/${editingCard.id}`, cleanedData);
 
             console.log('Card updated:', response.data);
 
