@@ -13,6 +13,7 @@ app.use(cors({
     'http://localhost:3000',             // local dev frontend
     'https://nba-cards-inventory.vercel.app'   // production frontend
   ],
+  credentials: true
 }));
 
 app.use(express.json()); // parses incoming JSON in POST/PUT requests so you can use req.body
