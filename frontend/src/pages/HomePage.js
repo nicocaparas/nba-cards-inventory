@@ -13,11 +13,21 @@ function HomePage() {
 
     return (
         <div className="-mt-7">
+            <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
+                <strong>Note:</strong> This demo may take a few seconds to load because the backend service on Render sleeps when idle. Please allow a short delay for the Collection and Extract Value pages to load.
+            </p>
             <div className="flex justify-center mb-6">
                 <div className="inline-block text-center bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded p-3">
                     Tip: Use the menu above to add cards, manage your collection, or try the "Get eBay Values" feature to analyze market prices.
                 </div>
             </div>
+
+            {/* Logo Image */}
+            <img
+                src={`${process.env.PUBLIC_URL}/hoopstock_homepage.png`}
+                alt="HoopStock Logo"
+                className="mx-auto mb-4 w-72 h-72"
+            />
 
             {/* Website Title */}
             <h1 className="text-5xl font-bold text-center text-blue-600 mb-10">
