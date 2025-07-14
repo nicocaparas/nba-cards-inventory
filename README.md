@@ -1,6 +1,6 @@
-# 🏀 NBA Card Inventory Management System
+# 🏀 HoopStock: NBA Card Inventory & Valuation Platform
 
-A full-stack web application to manage, track, and monitor your NBA trading card collection.
+HoopStock is a full-stack web application to manage, track, and monitor your NBA trading card collection, with tools to help estimate and analyze card values.
 
 ## 🚀 Features
 - Add new cards with player name, year, brand, variant, grading info, and price.
@@ -15,6 +15,12 @@ A full-stack web application to manage, track, and monitor your NBA trading card
 - Backend: Node.js, Express.js
 - Database: PostgreSQL (via Prisma ORM)
 - API Integration: Planned eBay API
+
+## 🌐 Deployment
+- **Frontend** deployed on [Vercel](https://vercel.com/)
+- **Backend & Database** deployed on [Render](https://render.com/)
+
+⚠️ **Note:** Public access is currently disabled while additional security, data validation, and feature refinements are underway. The platform will be opened to users once it’s safe and production-ready.
 
 ## 📦 Getting Started
 
@@ -40,7 +46,6 @@ npm start
 - Live market value updates via eBay API 
 - Sorting and advanced filtering
 - Card images and more metadata
-- Deployment to Vercel
 
 ## 🚧 eBay API Integration Status
 **📅 Status: Actively in development (as of June 13, 2025)**  
