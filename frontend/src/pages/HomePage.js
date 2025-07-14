@@ -26,13 +26,14 @@ function HomePage() {
             <img
                 src={`${process.env.PUBLIC_URL}/hoopstock_homepage.png`}
                 alt="HoopStock Logo"
-                className="mx-auto mb-4 w-72 h-72"
+                className="mx-auto"
+                style={{ width: "500px", height: "500px" }}
             />
 
-            {/* Website Title */}
+            {/* Website Title
             <h1 className="text-5xl font-bold text-center text-blue-600 mb-10">
                 NBA Card Inventory
-            </h1>
+            </h1> */}
 
             {/* Search Bar */}
             <p className="text-center text-gray-600 mb-6">
