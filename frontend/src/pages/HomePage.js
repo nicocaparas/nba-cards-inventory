@@ -14,7 +14,7 @@ function HomePage() {
     return (
         <div className="-mt-7">
             <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
-                <strong>Note:</strong> This demo may take a few seconds to load because the backend service on Render sleeps when idle. Please allow a short delay for the Collection and Extract Value pages to load.
+                <strong>Note:</strong> This demo may take a few seconds to load because the backend service on Render sleeps when idle. Please allow a short delay for the Collection and Get Ebay pages to load.
             </p>
             <div className="flex justify-center mb-6">
                 <div className="inline-block text-center bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded p-3">

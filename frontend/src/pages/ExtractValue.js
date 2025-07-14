@@ -51,6 +51,10 @@ const ExtractValue = () => {
                 📈 Extract Card Average Value
             </h2>
 
+            <p className="text-center text-gray-600 mb-6">
+                Search recent sold listings and average prices for your NBA cards using eBay data.
+            </p>
+
             <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
                 <strong>Note:</strong> This demo automatically loads results for “Apple iPhone 8 64GB” using mock data. 
                 Searching for any other terms will result in an error, as the live eBay API integration is still pending approval.
