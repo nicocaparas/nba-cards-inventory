@@ -1,6 +1,6 @@
 # 🏀 HoopStock: NBA Card Inventory & Valuation Platform
 
-HoopStock is a full-stack web application to manage, track, and monitor your NBA trading card collection, with tools to help estimate and analyze card values.
+HoopStock is a full-stack web application to manage, track, and monitor your NBA trading card collection. Future plans include tools to help estimate and analyze card values through external data sources.
 
 ## 🚀 Features
 - Add new cards with player name, year, brand, variant, grading info, and price.
@@ -8,13 +8,12 @@ HoopStock is a full-stack web application to manage, track, and monitor your NBA
 - View cards in a clean, searchable table layout.
 - Hot Cards section featuring top-performing cards.
 - Built with React (Frontend) and Node.js/Express + Prisma (Backend).
-- Integrate real-time pricing updates via the eBay API. ♻️ **IN PROGRESS** ♻️
 
 ## 🛠️ Tech Stack
 - Frontend: React, Tailwind CSS
 - Backend: Node.js, Express.js
 - Database: PostgreSQL (via Prisma ORM)
-- API Integration: Planned eBay API
+- API Integration: Exploring external APIs for future market price tracking
 
 ## 🌐 Deployment
 - **Frontend** deployed on [Vercel](https://vercel.com/)
@@ -43,19 +42,12 @@ npm start
 ```
 
 ## 🔮 Future Improvements
-- Live market value updates via eBay API 
+- Integrate live market value updates from external APIs or services.
 - Sorting and advanced filtering
 - Card images and more metadata
 
-## 🚧 eBay API Integration Status
-**📅 Status: Actively in development (as of June 13, 2025)**  
-- 🔍 This app originally intended to use eBay’s Finding API (findCompletedItems) to track sold card prices, but the API is deprecated.
-- 🔄 I'm now working toward integrating the Marketplace Insights API, which provides sales history data.
-- 🛠️ Integration requires passing eBay’s Application Growth Check, so the process involves multiple compliance and development steps.
-
-> **Note:**  
-> Currently, the main branch includes only code relevant for the eBay application submission.  
-> Additional features like the eBay Finding API, web scraping, and Marketplace API integrations are stored in separate feature branches and will be merged as needed.
+## 🚧 API Integration Note
+> HoopStock previously explored integration with eBay APIs for historical price tracking. As of July 16, 2025, the project has pivoted away from this due to eBay API limitations. Future integrations with other external APIs remain under consideration.
 
 ## 📄 License
 This project is licensed under the MIT License.
