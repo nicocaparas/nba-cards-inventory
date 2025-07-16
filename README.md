@@ -20,7 +20,7 @@ HoopStock is a full-stack web application to manage, track, and monitor your NBA
 - **Frontend** deployed on [Vercel](https://vercel.com/)
 - **Backend & Database** deployed on [Render](https://render.com/)
 
-⚠️ **Note:** Public access is currently disabled while additional security, data validation, and feature refinements are underway. The platform will be opened to users once it’s safe and production-ready.
+⚠️ **Note:** HoopStock is currently in beta, undergoing internal testing and improvements to ensure security and stability before broader use.
 
 ## 📦 Getting Started
 
