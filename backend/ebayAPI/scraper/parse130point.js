@@ -23,8 +23,24 @@ function parseHTML(html) {
             .text()
             .replace("Sale Date:", "")
             .trim();
+        // Extract ebayID for Best Offer listings only. 
+        const bestOfferDiv = $(row).find("div.ebayBestOfferAccepted");
+        const hasBestOffer = bestOfferDiv.length > 0;
 
-        listings.push({ title, price: numericPrice, date });
+        let ebayID = null;
+        if (hasBestOffer) {
+            const link = $(row).find("td.word-break a").attr("href") || "";
+            ebayID = link.match(/\/itm\/(\d+)/)?.[1] || null;
+        }
+
+
+        listings.push({
+            title,
+            price: numericPrice,
+            date,
+            hasBestOffer,
+            ebayID
+        });
     });
 
     return listings;
