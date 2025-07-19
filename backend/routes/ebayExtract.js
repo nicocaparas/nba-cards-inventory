@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-//const processListings = require('../ebayAPI/processListings');
+const processListings = require('../scraper/processListings');
 
 router.get('/analyze', async (req, res) => {
     try {
