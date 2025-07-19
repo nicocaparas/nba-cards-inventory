@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const getEbayData = require('../ebayAPI/getEbayData');
 //const processListings = require('../ebayAPI/processListings');
 
 router.get('/analyze', async (req, res) => {
@@ -12,17 +11,9 @@ router.get('/analyze', async (req, res) => {
             return res.status(400).json({ error: 'Missing query parameter.' });
         }
 
-        /**
-         * TODO:
-         * Replace this mock data call with a real request
-         * to eBay's Finding API once API keys are approved.
-         */
-        
-        // Call your mocked function
-        const listings = await getEbayData(query); // This is a mock
-        
-        const total = listings.reduce((sum, item) => sum + item.price, 0);
-        const averagePrice = total / listings.length;
+        // Call scrape130point
+
+        // Call processListings
 
         const result = {
             averagePrice: averagePrice,
@@ -30,9 +21,12 @@ router.get('/analyze', async (req, res) => {
             usedListings: listings,
           };
 
-        res.json(result);
+        // res.json(result);
 
-    } catch (error) {
+    } catch (error) {// 
+        
+        // Call your mocked function
+        const listings = 
         console.error(error);
         res.status(500).json({ error: 'Failed to extract listings. Please try again later.' });
     }
