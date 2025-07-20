@@ -1,6 +1,6 @@
 # 🏀 HoopStock: NBA Card Inventory & Valuation Platform
 
-HoopStock is a full-stack web application to manage, track, and monitor your NBA trading card collection. Future plans include tools to help estimate and analyze card values through external data sources.
+HoopStock is a full-stack web application to manage, track, and monitor your NBA trading card collection. Future plans include tools to help estimate and analyze card values through external data sources. 
 
 ## 🚀 Features
 - Add new cards with player name, year, brand, variant, grading info, and price.
@@ -42,7 +42,7 @@ npm start
 ```
 
 ## 🔮 Future Improvements
-- Integrate live market value updates from external APIs or services.
+- Integrate live market value updates from web scraping.
 - Sorting and advanced filtering
 - Card images and more metadata
 
