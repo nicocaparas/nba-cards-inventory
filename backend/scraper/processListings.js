@@ -73,7 +73,7 @@ async function processListings(listings, query) {
     // Step 2: Replace price with accepted offer if applicable
     for (const l of filteredListings) {
         if (l.hasBestOffer) {
-            await new Promise(r => setTimeout(r, 1500)); // avoid getting blocked
+            // await new Promise(r => setTimeout(r, 1500)); // avoid getting blocked
             const accepted = await getAcceptedBestOffer(l.ebayID);
             if (accepted) {
                 l.price = parseFloat(accepted.replace(/[^\d.]/g, ''));

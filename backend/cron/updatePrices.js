@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const fs = require('fs');
 
-// const scrape130Point = require('../ebayAPI/scraper/scrape130point.js');
-const getEbayData = require('../ebayAPI/getEbayData.js'); 
-const processListings = require('../ebayAPI/processListings.js');
+const scrape130Point = require('../scraper/scrape130point.js');
+const processListings = require('../scraper/processListings.js');
 
 async function updatePrices() {
     console.log('Starting price update!');
@@ -18,16 +18,14 @@ async function updatePrices() {
         console.log(`[🔍 Fetching for]: ${query}`);
 
         // STEP 1: Scrape listings
-        const listings = await getEbayData(query);
+        const listings = await scrape130Point(query);
 
         // STEP 2: Process listings
         const { averagePrice, sampleCount, usedListings } = processListings(listings, query);
 
         // Debug: print each used listing
-        console.log('[✅ Used Listings]');
-        usedListings.forEach((l, i) => {
-            console.log(`${i + 1}. Title: ${l.title}, Price: ${l.price}, Date: ${l.date}`);
-        });
+        fs.writeFileSync('finalUsedListings.json', JSON.stringify(usedListings, null, 2));
+        console.log('[✅ Used listings written to finalUsedListings.json]');
 
         if (averagePrice !== null) {
             // STEP 3: Insert new price history

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const ExtractValue = () => {
-    const [query, setQuery] = useState('Apple iPhone 8 64GB');
+    const [query, setQuery] = useState(null);
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,9 +14,6 @@ const ExtractValue = () => {
         setError(null);
 
         try {
-            // Simulate delay — e.g. 1.5 seconds
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-
             const response = await fetch(
                 `${process.env.REACT_APP_BASE_URL}/api/ebay-extract/analyze?query=${encodeURIComponent(query)}`
             );
@@ -38,12 +35,6 @@ const ExtractValue = () => {
         }
     };
 
-    // REMOVE THIS WHEN LIVE
-    useEffect(() => {
-        handleSearch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <div className="max-w-4xl mx-auto px-4 mb-10 -mt-7">
             {/* Page Title */}
@@ -54,12 +45,6 @@ const ExtractValue = () => {
             <p className="text-center text-gray-600 mb-6">
                 Search recent sold listings and average prices for your NBA cards using eBay data.
             </p>
-
-            <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
-                <strong>Note:</strong> This demo automatically loads results for “Apple iPhone 8 64GB” using mock data. 
-                Searching for any other terms will result in an error, as the live eBay API integration is still pending approval.
-            </p>
-
 
             {/* Search Section */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
@@ -96,16 +81,12 @@ const ExtractValue = () => {
                     <h3 className="text-3xl font-bold text-blue-500 mb-4">Results</h3>
 
                     <p className="text-sm text-gray-600 mt-4 mb-4">
-                        <strong>Disclaimer:</strong> The results shown below are based on mock data
-                        for demonstration purposes only. This page simulates how the application
-                        will display average prices and sample listings once connected to the live
-                        eBay API. The listings and prices shown are not real eBay data and do not
-                        reflect actual search results.
+                        <strong>Note:</strong> These results are based on real eBay sales data scraped from 130Point and processed for average pricing insights.
                     </p>
 
                     <div className="mb-4">
                         <h4 className="text-2xl font-extrabold text-gray-800 mb-2">
-                            Item Name: Apple iPhone 8 64GB
+                            Item Name: {query}
                         </h4>
 
                         <p className="text-2xl">
