@@ -51,31 +51,40 @@ function removeOutliers(listings, threshold = 0.5) {
  * @param {string} query - Search query to match against each listing title.
  * @returns {Object} - Contains `averagePrice` (float or null), `sampleCount` (int), and `usedListings` (array).
  */
-function processListings(listings, query) {
-    // Compute the cutoff start (1 week ago) and cutoff end (1 day ago)
-    // Normalize dates to midnight to avoid excluding same-day listings
+async function processListings(listings, query) {
     const now = new Date();
-    now.setHours(0, 0, 0, 0); // Normalize to midnight
+    now.setHours(0, 0, 0, 0);
 
-    const cutoffStart = new Date(now); // Start = 7 days ago (inclusive)
+    const cutoffStart = new Date(now);
     cutoffStart.setDate(now.getDate() - 7);
 
-    const cutoffEnd = new Date(now); // End = yesterday (inclusive)
+    const cutoffEnd = new Date(now);
     cutoffEnd.setDate(now.getDate() - 1);
 
-    // Step 1: All validation and relevance checks, and remove known variants
+    // Step 1: Validate, match query, and exclude variants
     const filteredListings = listings.filter(l =>
         isValidListing(l, cutoffStart, cutoffEnd) &&
         isRelevant(l.title, query) &&
         !isLikelyVariant(l.title, query)
     );
 
-    // Step 2: Remove price outliers only if enough data
+    // Step 2: Replace price with accepted offer if applicable
+    for (const l of filteredListings) {
+        if (l.hasBestOffer) {
+            await new Promise(r => setTimeout(r, 1500)); // avoid getting blocked
+            const accepted = await getAcceptedBestOffer(l.ebayID);
+            if (accepted) {
+                l.price = parseFloat(accepted.replace(/[^\d.]/g, ''));
+            }
+        }
+    }
+
+    // Step 3: Remove outliers
     const cleanedListings = filteredListings.length >= 3
         ? removeOutliers(filteredListings)
         : filteredListings;
 
-    // Step 3: Compute average
+    // Step 4: Compute average
     const finalPrices = cleanedListings.map(l => l.price);
     const averagePrice = finalPrices.length
         ? finalPrices.reduce((sum, p) => sum + p, 0) / finalPrices.length

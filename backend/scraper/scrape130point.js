@@ -25,7 +25,7 @@ async function scrape130Point(query) {
     const queryString = query.trim().replace(/\s+/g, '+');
     // Construct query request 
     const data = `query=${encodeURIComponent(queryString)}&type=2&subcat=-1`;
-    console.log(data);
+    //console.log(data);
 
     // For debugging - // Sample data format accepted by 130point: 
     // const data = 'query=anthony%2Bedwards%2Bprizm%2Bsilver%2Bpsa%2B10&type=2&subcat=-1';
@@ -39,7 +39,7 @@ async function scrape130Point(query) {
         fs.writeFileSync('130point_response.html', response.data);
 
         // For debugging - check if a response was returned
-        console.log('[✅ Response Length]', response.data.length);
+        //console.log('[✅ Response Length]', response.data.length);
 
         // Parse HTML response
         const listings = parseHTML(response.data);

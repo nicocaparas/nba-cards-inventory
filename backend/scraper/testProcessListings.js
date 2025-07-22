@@ -1,4 +1,5 @@
 const processListings = require('./processListings'); // adjust path if needed
+const scrape130Point = require('./scrape130point.js'); // adjust path if needed
 
 const today = new Date();
 const toDateStr = d => d.toISOString().split('T')[0];
@@ -138,8 +139,14 @@ const titleResult = processListings(testTitleListings, query);
 const priceResult = processListings(testPriceListings, query);
 const dateResult = processListings(testDateListings, query);
 
+// Scrape 130point
+(async () => {
+    const sampleListings = await scrape130Point(query);
+    console.log('sampleListings', sampleListings);
+})();
+
 // Show output
-console.log('[📊 Test Result]', titleResult);
+// console.log('[📊 Test Result]', titleResult);
 // console.log('[📊 Test Result]', priceResult);
 // console.log('[📊 Test Result]', dateResult);
 
