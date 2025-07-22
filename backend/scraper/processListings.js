@@ -1,3 +1,5 @@
+const getAcceptedBestOffer = require('./getBestOfferPrice.js');
+
 // Utility: validates basic structure of listing
 function isValidListing(listing, cutoffStart, cutoffEnd) {
     if (!listing.title || !listing.price || !listing.date) return false;
@@ -87,7 +89,7 @@ async function processListings(listings, query) {
     // Step 4: Compute average
     const finalPrices = cleanedListings.map(l => l.price);
     const averagePrice = finalPrices.length
-        ? finalPrices.reduce((sum, p) => sum + p, 0) / finalPrices.length
+        ? Math.round(finalPrices.reduce((sum, p) => sum + p, 0) / finalPrices.length)
         : null;
 
     return {

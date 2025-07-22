@@ -1,5 +1,6 @@
-const processListings = require('./processListings'); // adjust path if needed
-const scrape130Point = require('./scrape130point.js'); // adjust path if needed
+const processListings = require('./processListings');
+const scrape130Point = require('./scrape130point.js'); 
+const fs = require('fs');
 
 const today = new Date();
 const toDateStr = d => d.toISOString().split('T')[0];
@@ -132,23 +133,33 @@ const testDateListings = [
   ];
 
 // Define query
-const query = "2020 Zion Williamson Silver Prizm PSA 10";
+const query = "2023 Wembanyama Prizm Silver PSA 10 136";
 
 // Run function
-const titleResult = processListings(testTitleListings, query);
-const priceResult = processListings(testPriceListings, query);
-const dateResult = processListings(testDateListings, query);
+// (async () => {
+//     const titleResult = await processListings(testTitleListings, query);
+//     const priceResult = await processListings(testPriceListings, query);
+//     const dateResult = await processListings(testDateListings, query);
+
+//     console.log('[Title Result]', titleResult);
+//     console.log('[Price Result]', priceResult);
+//     console.log('[Date Result]', dateResult);
+// })();
 
 // Scrape 130point
 (async () => {
+    console.log('Scraping listings...');
     const sampleListings = await scrape130Point(query);
-    console.log('sampleListings', sampleListings);
-})();
 
-// Show output
-// console.log('[📊 Test Result]', titleResult);
-// console.log('[📊 Test Result]', priceResult);
-// console.log('[📊 Test Result]', dateResult);
+    fs.writeFileSync('scrapedListings.json', JSON.stringify(sampleListings, null, 2));
+    console.log('[✅ sampleListings written to scrapedListings.json]');
+
+    console.log('Processing listings for accuracy...');
+    const processListingsResult = await processListings(sampleListings, query);
+    fs.writeFileSync('processedResult.json', JSON.stringify(processListingsResult, null, 2));
+    console.log('[✅ Processed results written to processedResult.json]');
+
+})();
 
 // BUGS FOUND
 
