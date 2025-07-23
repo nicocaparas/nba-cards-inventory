@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const fs = require('fs');
 
 const scrape130Point = require('../scraper/scrape130point.js');
-const processListings = require('../scraper/processListings.js');
+const processListingsCron = require('./processListingsCron.js');
 
 async function updatePrices() {
     console.log('Starting price update!');
@@ -21,7 +21,7 @@ async function updatePrices() {
         const listings = await scrape130Point(query);
 
         // STEP 2: Process listings
-        const { averagePrice, sampleCount, usedListings } = processListings(listings, query);
+        const { averagePrice, sampleCount, usedListings } = processListingsCron(listings, query, card.cardNum);
 
         // Debug: print each used listing
         fs.writeFileSync('finalUsedListings.json', JSON.stringify(usedListings, null, 2));

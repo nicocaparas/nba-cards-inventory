@@ -1,4 +1,4 @@
-const getAcceptedBestOffer = require('./getBestOfferPrice.js');
+const getAcceptedBestOffer = require('../scraper/getBestOfferPrice.js');
 
 // Utility: validates basic structure of listing
 function isValidListing(listing, cutoffStart, cutoffEnd) {
@@ -13,11 +13,16 @@ function isValidListing(listing, cutoffStart, cutoffEnd) {
     return soldDate >= cutoffStart && soldDate <= cutoffEnd;
   }
 
-// Utility: checks if listing title contains all query keywords
-function isRelevant(title, query) {
+// Utility: checks if listing title contains all query keywords (except card number)
+function isRelevant(title, query, cardNum) {
     const keywords = query.toLowerCase().split(/\s+/).filter(Boolean);
     const lowerTitle = title?.toLowerCase() || "";
-    return keywords.every(keyword => lowerTitle.includes(keyword));
+    const cardNumStr = String(cardNum);
+
+    // Remove card number from keyword check
+    const nonCardKeywords = keywords.filter(k => k !== cardNumStr);
+
+    return nonCardKeywords.every(k => lowerTitle.includes(k));
   }
 
 // Heuristic: Checks if title includes variant terms not found in the query
@@ -53,7 +58,7 @@ function removeOutliers(listings, threshold = 0.5) {
  * @param {string} query - Search query to match against each listing title.
  * @returns {Object} - Contains `averagePrice` (float or null), `sampleCount` (int), and `usedListings` (array).
  */
-async function processListings(listings, query) {
+async function processListingsCron(listings, query, cardNum) {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
 
@@ -66,7 +71,7 @@ async function processListings(listings, query) {
     // Step 1: Validate, match query, and exclude variants
     const filteredListings = listings.filter(l =>
         isValidListing(l, cutoffStart, cutoffEnd) &&
-        isRelevant(l.title, query) &&
+        isRelevant(l.title, query, cardNum) &&
         !isLikelyVariant(l.title, query)
     );
 
@@ -99,12 +104,4 @@ async function processListings(listings, query) {
     };
 }
 
-module.exports = processListings;
-
-// ✅ Only run this block if the file is run directly (not imported)
-if (require.main === module) {
-    const result = processListings(sampleListings, query);
-
-    console.log('✅ processListings Debug Result:');
-    console.log(JSON.stringify(result, null, 2));
-}
+module.exports = processListingsCron;

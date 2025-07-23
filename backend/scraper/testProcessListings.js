@@ -133,7 +133,8 @@ const testDateListings = [
   ];
 
 // Define query
-const query = "2023 Wembanyama Prizm Silver PSA 10 136";
+//const query = "2023 Wembanyama Prizm Silver PSA 10 136";
+const query = "2018 trae young prizm silver psa 10 78";
 
 // Run function
 // (async () => {
