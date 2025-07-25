@@ -17,7 +17,7 @@ HoopStock is a full-stack web application to manage, track, and monitor your NBA
 
 ## 🌐 Deployment
 - **Frontend** deployed on [Vercel](nba-cards-inventory.vercel.app)
-- **Backend & Database** deployed on [Render](https://render.com/)
+- **Backend & Database** deployed on Render
 
 ⚠️ **Note:** HoopStock is currently in beta, undergoing internal testing and improvements to ensure security and stability before broader use.
 
