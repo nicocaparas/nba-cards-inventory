@@ -1,16 +1,20 @@
 const getAcceptedBestOffer = require('./getBestOfferPrice.js');
 
 // Utility: validates basic structure of listing
-function isValidListing(listing, cutoffStart, cutoffEnd) {
+function isValidListing(listing) {
     if (!listing.title || !listing.price || !listing.date) return false;
     if (typeof listing.price !== 'number' || isNaN(listing.price)) return false;
     if (listing.price <= 0) return false; 
 
     const soldDate = new Date(listing.date);
     if (isNaN(soldDate)) return false;
-    soldDate.setHours(0, 0, 0, 0);  // Set time to 00:00:00
 
-    return soldDate >= cutoffStart && soldDate <= cutoffEnd;
+    // ✅ Only show listings from the last 30 days
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    return soldDate >= thirtyDaysAgo && soldDate <= today;;
   }
 
 // Utility: checks if listing title contains all query keywords
@@ -54,18 +58,9 @@ function removeOutliers(listings, threshold = 0.5) {
  * @returns {Object} - Contains `averagePrice` (float or null), `sampleCount` (int), and `usedListings` (array).
  */
 async function processListings(listings, query) {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-
-    const cutoffStart = new Date(now);
-    cutoffStart.setDate(now.getDate() - 7);
-
-    const cutoffEnd = new Date(now);
-    cutoffEnd.setDate(now.getDate() - 1);
-
     // Step 1: Validate, match query, and exclude variants
     const filteredListings = listings.filter(l =>
-        isValidListing(l, cutoffStart, cutoffEnd) &&
+        isValidListing(l) &&
         isRelevant(l.title, query) &&
         !isLikelyVariant(l.title, query)
     );

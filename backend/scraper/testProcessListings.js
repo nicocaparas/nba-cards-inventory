@@ -1,6 +1,7 @@
 const processListings = require('./processListings');
 const scrape130Point = require('./scrape130point.js'); 
 const fs = require('fs');
+const path = require('path');
 
 const today = new Date();
 const toDateStr = d => d.toISOString().split('T')[0];
@@ -134,7 +135,7 @@ const testDateListings = [
 
 // Define query
 //const query = "2023 Wembanyama Prizm Silver PSA 10 136";
-const query = "2018 trae young prizm silver psa 10 78";
+const query = "2018 Luka Doncic Prizm Silver PSA 10 280";
 
 // Run function
 // (async () => {
@@ -147,19 +148,18 @@ const query = "2018 trae young prizm silver psa 10 78";
 //     console.log('[Date Result]', dateResult);
 // })();
 
-// Scrape 130point
+/// Scrape 130point
 (async () => {
     console.log('Scraping listings...');
     const sampleListings = await scrape130Point(query);
 
-    fs.writeFileSync('scrapedListings.json', JSON.stringify(sampleListings, null, 2));
-    console.log('[✅ sampleListings written to scrapedListings.json]');
+    fs.writeFileSync(path.join('test_files', 'scrapedListings.json'), JSON.stringify(sampleListings, null, 2));
+    console.log('[✅ sampleListings written to test_files/scrapedListings.json]');
 
     console.log('Processing listings for accuracy...');
     const processListingsResult = await processListings(sampleListings, query);
-    fs.writeFileSync('processedResult.json', JSON.stringify(processListingsResult, null, 2));
-    console.log('[✅ Processed results written to processedResult.json]');
-
+    fs.writeFileSync(path.join('test_files', 'processedResult.json'), JSON.stringify(processListingsResult, null, 2));
+    console.log('[✅ Processed results written to test_files/processedResult.json]');
 })();
 
 // BUGS FOUND

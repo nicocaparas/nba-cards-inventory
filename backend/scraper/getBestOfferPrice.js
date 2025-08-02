@@ -27,6 +27,8 @@ async function getAcceptedBestOffer(ebayID) {
         // Extract value from submit button (e.g. "$1,312.50")
         const acceptedPrice = $("div.bestOfferSoldPrice input[type='submit']").val();
 
+        // Future improvement: Adding a currency converter here for AUD, CAD, GBP since acceptedPrice contains the currency.
+
         return acceptedPrice;
     } catch (err) {
         console.error('❌ Failed to fetch accepted offer', err.message);

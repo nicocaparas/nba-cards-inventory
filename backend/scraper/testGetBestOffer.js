@@ -1,7 +1,7 @@
 const getAcceptedBestOffer = require('./getBestOfferPrice');
 
 // Example eBay ID — this should come from a real Best Offer listing
-const ebayID = '357157158030';
+const ebayID = '356530122494';
 
 async function testGetBestOffer() {
     const price = await getAcceptedBestOffer(ebayID);

@@ -1,0 +1,27 @@
+{
+  "averagePrice": 168,
+  "sampleCount": 3,
+  "usedListings": [
+    {
+      "title": "2018 PANINI PRIZM SILVER PRIZM #78 TRAE YOUNG ROOKIE RC PSA 10",
+      "price": 174.99,
+      "date": "Jul 30 2025",
+      "hasBestOffer": true,
+      "ebayID": "297098890315"
+    },
+    {
+      "title": "2018-19 Panini Prizm Silver Prizm Trae Young #78 PSA 10 GEM MT Rookie RC",
+      "price": 200,
+      "date": "Jul 27 2025",
+      "hasBestOffer": true,
+      "ebayID": "365693434548"
+    },
+    {
+      "title": "2018-19 Panini Prizm Trae Young Silver Prizm Rookie PSA 10 Hawks RC",
+      "price": 130,
+      "date": "Jul 26 2025",
+      "hasBestOffer": true,
+      "ebayID": "236229731823"
+    }
+  ]
+}
