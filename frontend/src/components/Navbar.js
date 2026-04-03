@@ -38,6 +38,17 @@ function Navbar() {
                 </NavLink>
 
                 <NavLink
+                    to="/nba-table"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "text-yellow-300 border-b-2 border-yellow-300 pb-1"
+                            : "hover:text-gray-200 transition pb-1"
+                    }
+                >
+                    🏀 NBA Table
+                </NavLink>
+
+                <NavLink
                     to="/extract"
                     className={({ isActive }) =>
                         isActive

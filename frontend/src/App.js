@@ -6,6 +6,7 @@ import CollectionPage from './pages/CollectionPage';
 //import EbayTest from './pages/EbayTest';
 import Navbar from './components/Navbar';
 import ExtractValue from './pages/ExtractValue';
+import NBATablePage from './pages/NBATablePage';
 
 import { CardsProvider } from './context/CardsContext'; 
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/add-card" element={<AddCardPage />} />
             <Route path="/collection" element={<CollectionPage />} />
             <Route path="/extract" element={<ExtractValue />} />
+            <Route path="/nba-table" element={<NBATablePage />} />
             {/* <Route path="/ebay-test" element={<EbayTest />} /> */} 
           </Routes>
         </div>
@@ -29,4 +31,3 @@ function App() {
 }
 
 export default App;
-
