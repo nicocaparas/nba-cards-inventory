@@ -10,7 +10,12 @@ export function CardsProvider({ children }) {
 
     // Function to fetch cards from backend
     const fetchCards = () => {
-        axios.get(`${process.env.REACT_APP_BASE_URL}/cards`)
+        if (!process.env.REACT_APP_BASE_URL) {
+            setCards([]);
+            return Promise.resolve();
+        }
+
+        return axios.get(`${process.env.REACT_APP_BASE_URL}/cards`)
             .then((response) => {
                 // Sort cards by playerName (A → Z)
                 const sortedCards = response.data.sort((a, b) =>
@@ -20,7 +25,7 @@ export function CardsProvider({ children }) {
             })
             .catch((error) => {
                 console.error('Error fetching cards:', error);
-                alert('Failed to load cards. Please try again later.');
+                setCards([]);
             });
     };
 
