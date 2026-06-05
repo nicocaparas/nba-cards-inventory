@@ -1,12 +1,105 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCards } from '../context/CardsContext';
 import axios from 'axios';
 import CardForm from '../components/CardForm';
+import proDashboardCards from '../data/proDashboardCards';
+import './CollectionPage.css';
+
+const TABULATOR_CSS_ID = 'tabulator-cdn-css';
+const TABULATOR_SCRIPT_ID = 'tabulator-cdn-script';
+const TABULATOR_CSS_URL = 'https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css';
+const TABULATOR_SCRIPT_URL = 'https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js';
+
+function useTabulatorLibrary() {
+    const [isReady, setIsReady] = useState(() => Boolean(window.Tabulator));
+
+    useEffect(() => {
+        if (window.Tabulator) {
+            setIsReady(true);
+            return undefined;
+        }
+
+        if (!document.getElementById(TABULATOR_CSS_ID)) {
+            const link = document.createElement('link');
+            link.id = TABULATOR_CSS_ID;
+            link.rel = 'stylesheet';
+            link.href = TABULATOR_CSS_URL;
+            document.head.appendChild(link);
+        }
+
+        let script = document.getElementById(TABULATOR_SCRIPT_ID);
+        const handleLoad = () => setIsReady(Boolean(window.Tabulator));
+
+        if (!script) {
+            script = document.createElement('script');
+            script.id = TABULATOR_SCRIPT_ID;
+            script.src = TABULATOR_SCRIPT_URL;
+            script.async = true;
+            script.addEventListener('load', handleLoad);
+            document.body.appendChild(script);
+        } else {
+            script.addEventListener('load', handleLoad);
+        }
+
+        return () => {
+            script.removeEventListener('load', handleLoad);
+        };
+    }, []);
+
+    return isReady;
+}
+
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+    }).format(Number(value) || 0);
+}
+
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+    }[character]));
+}
+
+function sortIsoDateStrings(leftDate, rightDate) {
+    return String(leftDate || '').localeCompare(String(rightDate || ''));
+}
+
+function normalizeCard(card) {
+    const grade = card.grade === null || card.grade === undefined || card.grade === ''
+        ? null
+        : Number(card.grade);
+    const grader = card.grader || (card.isGraded ? 'PSA' : 'Raw');
+    const cardTitle = card.cardTitle
+        || [card.year, card.cardBrand, card.playerName, card.variant].filter(Boolean).join(' ');
+
+    return {
+        ...card,
+        cardTitle,
+        playerName: card.playerName || 'Unknown Player',
+        image: card.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(card.playerName || 'NBA Card')}&background=0d1b3e&color=f5a623`,
+        grader,
+        grade,
+        gradeLabel: grade ? `${grader} ${grade}` : 'Raw',
+        acquirePrice: Number(card.acquirePrice) || 0,
+        status: card.status || (grade ? 'Hold' : 'Raw'),
+        acquiredDate: card.acquiredDate || new Date().toISOString().slice(0, 10),
+    };
+}
 
 function CollectionPage() {
     const { cards, setCards, fetchCards } = useCards(); // use Context
-    const [editVisibleId, setEditVisibleId] = useState(null); // For the edit button 
     const [editingCard, setEditingCard] = useState(null);
+    const [globalSearch, setGlobalSearch] = useState('');
+    const tableRef = useRef(null);
+    const tableInstanceRef = useRef(null);
+    const isTabulatorReady = useTabulatorLibrary();
 
     const [editFormData, setEditFormData] = useState({
         playerName: '',
@@ -22,8 +115,18 @@ function CollectionPage() {
         trackPrices: false,
     });
 
+    const tableData = useMemo(() => {
+        const sourceCards = cards.length > 0 ? cards : proDashboardCards;
+        return sourceCards.map(normalizeCard);
+    }, [cards]);
+
     // Function to handle deleting a card by its ID
-    const handleDelete = (id) => {
+    const handleDelete = useCallback((id) => {
+        if (!process.env.REACT_APP_BASE_URL || String(id).startsWith('mock-')) {
+            setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+            return;
+        }
+
         axios.delete(`${process.env.REACT_APP_BASE_URL}/cards/${id}`)
             .then(() => {
                 // Remove the card from card context 
@@ -33,15 +136,10 @@ function CollectionPage() {
                 console.error('Error deleting card:', error);
                 alert('Failed to delete card. Please try again later.');
             });
-    };
-
-    // Toggle edit visibility per card
-    const toggleEdit = (id) => {
-        setEditVisibleId((prevId) => (prevId === id ? null : id));
-    };
+    }, [setCards]);
 
     // When user clicks Edit button, preload form
-    const handleEditClick = (card) => {
+    const handleEditClick = useCallback((card) => {
         // Sets editingCard to the card object 
         setEditingCard(card); 
         // Sets the form with card metadata
@@ -58,7 +156,112 @@ function CollectionPage() {
             acquirePrice: card.acquirePrice || '',
             trackPrices: card.trackPrices || false,
         });
-    };
+    }, []);
+
+    useEffect(() => {
+        if (!isTabulatorReady || !tableRef.current) {
+            return undefined;
+        }
+
+        tableInstanceRef.current = new window.Tabulator(tableRef.current, {
+            data: tableData,
+            layout: 'fitColumns',
+            pagination: true,
+            paginationSize: 20,
+            paginationSizeSelector: [20, 50, 100],
+            placeholder: 'No cards match this view.',
+            initialSort: [{ column: 'acquiredDate', dir: 'desc' }],
+            columns: [
+                {
+                    title: '',
+                    field: 'image',
+                    width: 74,
+                    headerSort: false,
+                    formatter: (cell) => `<img class="card-avatar" alt="" src="${escapeHtml(cell.getValue())}" />`,
+                },
+                {
+                    title: 'Card',
+                    field: 'cardTitle',
+                    minWidth: 250,
+                    formatter: (cell) => {
+                        const row = cell.getRow().getData();
+                        return `<span class="card-title-cell"><strong>${escapeHtml(row.cardTitle)}</strong><span>${escapeHtml(row.playerName)}</span></span>`;
+                    },
+                },
+                {
+                    title: 'Grade',
+                    field: 'grade',
+                    width: 120,
+                    sorter: 'number',
+                    formatter: (cell) => {
+                        const row = cell.getRow().getData();
+                        const className = row.grade >= 10 ? 'grade-badge--gem' : row.grade ? 'grade-badge--graded' : 'grade-badge--raw';
+                        return `<span class="grade-badge ${className}">${escapeHtml(row.gradeLabel)}</span>`;
+                    },
+                },
+                {
+                    title: 'Value',
+                    field: 'acquirePrice',
+                    width: 130,
+                    sorter: 'number',
+                    hozAlign: 'right',
+                    formatter: (cell) => `<strong>${formatCurrency(cell.getValue())}</strong>`,
+                },
+                {
+                    title: 'Status',
+                    field: 'status',
+                    width: 130,
+                    formatter: (cell) => `<span class="status-tag">${escapeHtml(cell.getValue())}</span>`,
+                },
+                {
+                    title: 'Date',
+                    field: 'acquiredDate',
+                    width: 128,
+                    sorter: sortIsoDateStrings,
+                },
+                {
+                    title: 'Actions',
+                    field: 'id',
+                    width: 150,
+                    headerSort: false,
+                    formatter: () => `
+                        <button class="table-action" type="button" data-action="edit">Edit</button>
+                        <button class="table-action table-action--danger" type="button" data-action="delete">Delete</button>
+                    `,
+                    cellClick: (event, cell) => {
+                        const action = event.target.dataset.action;
+                        const card = cell.getRow().getData();
+
+                        if (action === 'edit') {
+                            handleEditClick(card);
+                        }
+
+                        if (action === 'delete') {
+                            handleDelete(card.id);
+                        }
+                    },
+                },
+            ],
+        });
+
+        return () => {
+            tableInstanceRef.current?.destroy();
+            tableInstanceRef.current = null;
+        };
+    }, [handleDelete, handleEditClick, isTabulatorReady, tableData]);
+
+    useEffect(() => {
+        if (!tableInstanceRef.current) {
+            return;
+        }
+
+        if (!globalSearch.trim()) {
+            tableInstanceRef.current.clearFilter();
+            return;
+        }
+
+        tableInstanceRef.current.setFilter('playerName', 'like', globalSearch.trim());
+    }, [globalSearch, isTabulatorReady, tableData]);
 
     // Handle form submit to update card
     const handleFormSubmit = async (e) => {
@@ -70,6 +273,14 @@ function CollectionPage() {
             grader: editFormData.grader && editFormData.grader.trim() !== '' ? editFormData.grader.trim() : null,
             grade: editFormData.grade !== '' ? parseFloat(editFormData.grade) : null,
         };
+
+        if (!process.env.REACT_APP_BASE_URL || String(editingCard.id).startsWith('mock-')) {
+            setCards((prevCards) => prevCards.map((card) => (
+                card.id === editingCard.id ? { ...card, ...cleanedData } : card
+            )));
+            setEditingCard(null);
+            return;
+        }
 
         try {
             const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/cards/${editingCard.id}`, cleanedData);
@@ -85,101 +296,43 @@ function CollectionPage() {
     };
 
     return (
-        <div>
-            {/* Card List */}
-            <div className="mb-10 -mt-7">
-                <h2 className="text-3xl font-bold text-center text-green-500 mb-6">
-                    📚 Your Collection
-                </h2>
-
-                <p className="text-center text-gray-600 mb-6">
-                    View all the NBA cards you’ve added to your collection, including player details, card info, and prices
-                </p>
-
-                <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-4">
-                    <strong>Note:</strong> This page shows the user’s saved collection. It lists key details like player name, card brand, the user’s acquisition price, etc. This table does not include eBay data—it only reflects the user’s personal entries.
-                </p>
-
-                <div className="flex flex-col gap-6">
-                    {cards.map((card) => (
-                        <div key={card.id} className="flex flex-col gap-2">
-                            <div
-                                key={card.id}
-                                className="flex items-center justify-between border border-gray-300 p-4 rounded-2xl shadow-md bg-white hover:shadow-lg hover:bg-gray-50 transition-all duration-300"
-                            >
-                                {/* Player Name + RC */}
-                                <div className="flex items-center gap-2 w-1/5 font-bold">
-                                    {card.playerName}
-                                    {card.isRookie && (
-                                        <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded-full">
-                                            RC
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Year + Brand */}
-                                <div className="w-1/5 text-gray-600">{card.year} {card.cardBrand}</div>
-
-                                {/* Variant */}
-                                <div className="w-1/5 text-gray-500">{card.variant || "-"}</div>
-
-                                {/* Grader + Grade */}
-                                <div className="w-1/5 text-sm">
-                                    {card.isGraded ? (
-                                        <>{card.grader} {card.grade}</>
-                                    ) : (
-                                        <>-</>
-                                    )}
-                                </div>
-
-                                {/* Price */}
-                                <div className="w-1/12 text-green-600 font-bold">
-                                    {card.acquirePrice ? `$${card.acquirePrice}` : "—"}
-                                </div>
-
-                                {/* Edit Icon */}
-                                <div className="flex items-center justify-end gap-2 w-1/12">
-                                    {editVisibleId === card.id && (
-                                        <>
-                                            <button
-                                                onClick={() => handleDelete(card.id)}
-                                                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition font-semibold"
-                                            >
-                                                Delete
-                                            </button>
-                                            <button
-                                                onClick={() => handleEditClick(card)}
-                                                className="bg-yellow-400 text-white px-2 py-1 rounded hover:bg-yellow-500 transition font-semibold"
-                                            >
-                                                Edit
-                                            </button>
-                                        </>
-                                    )}
-                                    <button
-                                        onClick={() => toggleEdit(card.id)}
-                                        className="transform hover:scale-125 transition-all duration-200"
-                                    >
-                                        ✏️
-                                    </button>
-                                </div>
-                            </div>
-
-                                {editingCard && editingCard.id === card.id && (
-                                    <CardForm
-                                        formData={editFormData}
-                                        setFormData={setEditFormData}
-                                        handleSubmit={handleFormSubmit}
-                                        isEditMode={true}
-                                        setEditingCard={setEditingCard}
-                                    />
-                                )}
-                        </div>
-                    ))}
+        <div className="pro-dashboard">
+            <div className="pro-dashboard__header">
+                <div>
+                    <h2 className="pro-dashboard__title">Pro Dashboard Cards</h2>
+                    <p className="pro-dashboard__subtitle">
+                        Interactive Tabulator.js table with NBA card mock data, sortable value/grade/date columns, player search, and 20-row pagination.
+                    </p>
                 </div>
+
+                <input
+                    type="search"
+                    className="pro-dashboard__search"
+                    placeholder="Search player name..."
+                    value={globalSearch}
+                    onChange={(event) => setGlobalSearch(event.target.value)}
+                    aria-label="Search by player name"
+                />
             </div>
+
+            {!isTabulatorReady && (
+                <div className="pro-dashboard__loading">Loading Tabulator table...</div>
+            )}
+            <div className="pro-dashboard__table" ref={tableRef} />
+
+            {editingCard && (
+                <div className="pro-dashboard__edit-panel">
+                    <CardForm
+                        formData={editFormData}
+                        setFormData={setEditFormData}
+                        handleSubmit={handleFormSubmit}
+                        isEditMode={true}
+                        setEditingCard={setEditingCard}
+                    />
+                </div>
+            )}
         </div>
     );
 }
 
 export default CollectionPage;
-  
